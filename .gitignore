@@ -27,3 +27,13 @@
 *.exe
 *.out
 *.app
+*.log
+*.pdb
+*.db
+*.opendb
+*.ilk
+*.user
+*.idb
+*.tlog
+*.suo
+UpgradeLog.htm
