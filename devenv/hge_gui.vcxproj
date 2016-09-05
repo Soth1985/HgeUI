@@ -10,6 +10,13 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\hge_tut06.cpp" />
+    <ClCompile Include="..\src\menuitem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\menuitem.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <SccProjectName />
     <SccLocalPath />
@@ -42,14 +49,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\precompiled\</OutDir>
+    <OutDir>..\bin\</OutDir>
     <IntDir>.\Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\dependencies\hge\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\Release\</OutDir>
+    <OutDir>..\bin\</OutDir>
     <IntDir>.\Release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\dependencies\hge\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -63,13 +72,13 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>.\Debug\hge_tut08.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug\hge_gui.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Debug\</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
     </ClCompile>
     <Midl>
-      <TypeLibraryName>.\Debug\hge_tut08.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug\hge_gui.tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <Culture>0x0419</Culture>
@@ -77,14 +86,14 @@
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug\hge_tut08.bsc</OutputFile>
+      <OutputFile>.\Debug\hge_gui.bsc</OutputFile>
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>$(OutDir)\hge_tut08.exe</OutputFile>
-      <AdditionalDependencies>..\..\lib\vc\hge.lib;..\..\lib\vc\hgehelp.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)\hge_gui.exe</OutputFile>
+      <AdditionalDependencies>..\dependencies\hge\lib\vc\hge.lib;..\dependencies\hge\lib\vc\hgehelp.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <IgnoreSpecificDefaultLibraries>libc.lib</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -100,12 +109,12 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>.\Release\hge_tut08.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release\hge_gui.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
     </ClCompile>
     <Midl>
-      <TypeLibraryName>.\Release\hge_tut08.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release\hge_gui.tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <Culture>0x0419</Culture>
@@ -113,18 +122,16 @@
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release\hge_tut08.bsc</OutputFile>
+      <OutputFile>.\Release\hge_gui.bsc</OutputFile>
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>.\Release\hge_tut08.exe</OutputFile>
-      <AdditionalDependencies>..\..\lib\vc\hge.lib;..\..\lib\vc\hgehelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Release\hge_gui.exe</OutputFile>
+      <AdditionalDependencies>..\dependencies\hge\lib\vc\hge.lib;..\dependencies\hge\lib\vc\hgehelp.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libc</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="hge_tut08.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
