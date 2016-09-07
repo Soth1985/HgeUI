@@ -11,11 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\hge_tut06.cpp" />
-    <ClCompile Include="..\src\menuitem.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\menuitem.h" />
+    <ClInclude Include="..\include\ThColor.h" />
+    <ClInclude Include="..\include\ThDelegate.h" />
+    <ClInclude Include="..\include\ThDim.h" />
+    <ClInclude Include="..\include\ThGuiButton.h" />
+    <ClInclude Include="..\include\ThGuiContext.h" />
+    <ClInclude Include="..\include\ThGuiElement.h" />
+    <ClInclude Include="..\include\ThGuiForward.h" />
+    <ClInclude Include="..\include\ThGuiImage.h" />
+    <ClInclude Include="..\include\ThGuiPanel.h" />
+    <ClInclude Include="..\include\ThGuiContextHge.h" />
+    <ClInclude Include="..\include\ThInput.h" />
+    <ClInclude Include="..\include\ThRect.h" />
+    <ClInclude Include="..\include\ThVec2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <SccProjectName />
@@ -52,13 +63,13 @@
     <OutDir>..\bin\</OutDir>
     <IntDir>.\Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\dependencies\hge\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\dependencies\hge\include;..\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\bin\</OutDir>
     <IntDir>.\Release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\dependencies\hge\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\dependencies\hge\include;..\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

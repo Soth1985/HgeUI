@@ -19,6 +19,7 @@
 #include "hgefont.h"
 #include "hgeparticle.h"
 
+#include "ThGuiForward.h"
 
 // Pointer to the HGE interface.
 // Helper classes require this to work.
@@ -36,7 +37,7 @@ HTEXTURE			tex;
 HEFFECT				snd;
 
 // Some "gameplay" variables
-float x=100.0f, y=100.0f;
+float x=0.0f, y=0.0f;
 float dx=0.0f, dy=0.0f;
 
 const float speed=90;
@@ -44,13 +45,12 @@ const float friction=0.98f;
 
 // Play sound effect
 void boom() {
-	int pan=int((x-400)/4);
-	float pitch=(dx*dx+dy*dy)*0.0005f+0.2f;
-	hge->Effect_PlayEx(snd,100,pan,pitch);
+	
 }
 
 bool FrameFunc()
 {
+	
 	float dt=hge->Timer_GetDelta();
 
 	// Process keys
@@ -120,9 +120,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		// Create and set up a sprite
-		spr=new hgeSprite(tex, 96, 64, 32, 32);
+		spr=new hgeSprite(0, 96, 64, 32, 32);
 		spr->SetColor(0xFFFFA000);
-		spr->SetHotSpot(16,16);
+		//spr->SetHotSpot(16,16);
 
 		// Load a font
 		fnt=new hgeFont("font1.fnt");

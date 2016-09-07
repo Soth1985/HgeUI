@@ -16,7 +16,7 @@
 #include "hge.h"
 #include "hgefont.h"
 #include "hgegui.h"
-
+#include "ThDelegate.h"
 #include "menuitem.h"
 
 #include <math.h>
@@ -95,11 +95,8 @@ bool RenderFunc()
 	return false;
 }
 
-
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	hge = hgeCreate(HGE_VERSION);
-
 	hge->System_SetState(HGE_LOGFILE, "hge_tut06.log");
 	hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 	hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
