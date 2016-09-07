@@ -41,13 +41,13 @@
     <ClInclude Include="..\include\ThGuiImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\ThGuiPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\ThInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\ThGuiContextHge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ThGui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

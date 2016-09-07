@@ -13,6 +13,8 @@ namespace Thor
 	typedef ThVec2<ThDim> ThDim2;
 	typedef ThRect<ThVec2f> ThRectf;
 	typedef ThRect<ThDim2> ThDimRect;
+	typedef uint32_t ThTexHandle;
+	typedef uint32_t ThElementID;
 
 	class ThGuiContext;
 	typedef std::shared_ptr<ThGuiContext> ThGuiContextPtr;

@@ -17,12 +17,12 @@
     <ClInclude Include="..\include\ThColor.h" />
     <ClInclude Include="..\include\ThDelegate.h" />
     <ClInclude Include="..\include\ThDim.h" />
+    <ClInclude Include="..\include\ThGui.h" />
     <ClInclude Include="..\include\ThGuiButton.h" />
     <ClInclude Include="..\include\ThGuiContext.h" />
     <ClInclude Include="..\include\ThGuiElement.h" />
     <ClInclude Include="..\include\ThGuiForward.h" />
     <ClInclude Include="..\include\ThGuiImage.h" />
-    <ClInclude Include="..\include\ThGuiPanel.h" />
     <ClInclude Include="..\include\ThGuiContextHge.h" />
     <ClInclude Include="..\include\ThInput.h" />
     <ClInclude Include="..\include\ThRect.h" />
