@@ -10,6 +10,7 @@ namespace Thor
 	public:
 		virtual ~ThGuiContext();
 		int32_t GenElementID();
+		virtual ThTexHandle CreateTexture();
 	private:
 		ThInput m_Input;
 		ThRectf m_DrawArea;
