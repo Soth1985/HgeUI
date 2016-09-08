@@ -23,17 +23,68 @@ ThGuiElement::~ThGuiElement()
 
 void ThGuiElement::Layout(const ThRectf& parentArea)
 {
+    ThVec2f parentSize = parentArea.Size();
+    ThDim2 relPos = GetPosition();
+    ThDim2 relSize = GetSize();
+    ThVec2f absPos = Util::GetAbsoluteDimension(relPos, parentSize);
+    ThVec2f absSize = Util::GetAbsoluteDimension(relPos, parentSize);
+    m_RealRect.TopLeft() = absPos;
+    m_RealRect.BottomRight() = absPos + absSize;
     
+    //TODO anchor solver
+    
+    for (size_t i = 0; i < m_Children.size(); ++i)
+    {
+        return m_Children[i]->Layout(m_RealRect);
+    }
 }
 
 void ThGuiElement::ProcessInput()
 {
-    
+    for (size_t i = 0; i < m_Children.size(); ++i)
+    {
+        return m_Children[i]->ProcessInput();
+    }
 }
 
-void ThGuiElement::Render()
+void ThGuiElement::Render(ThCommandBuffer& cmd, int16_t depth)
 {
+    if (GetNumChildren > 0)
+    {
+        cmd.PushState(m_RealRect);
+    }
     
+    ThLayer layer(m_Layer, depth);
+    cmd.AddQuad(m_RealRect, m_Texture, layer, m_Color);
+    
+    if (m_BorderWidth > 0)
+    {
+        ThVec2f size = m_RealRect.Size();
+        ThVec2f topLeft = m_RealRect.TopLeft();
+        ThVec2f topRight = topLeft + size.X();
+        ThVec2f bottomRight = topRight - size.Y();
+        ThVec2f bottomLeft = bottomRight - size.X();
+        
+        cmd.AddLine(topLeft, topRight, m_BorderWidth, m_BorderColor);
+        cmd.AddLine(topRight, bottomRight, m_BorderWidth, m_BorderColor);
+        cmd.AddLine(bottomRight, bottomLeft, m_BorderWidth, m_BorderColor);
+        cmd.AddLine(bottomLeft, topLeft, m_BorderWidth, m_BorderColor);
+    }
+    
+    for (size_t i = 0; i < m_Children.size(); ++i)
+    {
+        return m_Children[i]->Render(cmd, depth + 1);
+    }
+    
+    if (GetNumChildren > 0)
+    {
+        cmd.PopState();
+    }
+}
+
+WidgetType ThGuiElement::GetType()const
+{
+    return WidgetType::Panel;
 }
 
 bool ThGuiElement::PushChild(ThGuiElementPtr child)

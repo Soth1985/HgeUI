@@ -1,11 +1,14 @@
 #pragma once
 
+#include "ThVec2.h"
+
 namespace Thor
 {
 	template <class T>
 	struct ThRect
 	{
 		typedef T ValueType;
+        typedef ThVec2<T> Vec2;
 
 		ThRect()
 		{
@@ -49,6 +52,11 @@ namespace Thor
 		{
 			return (m_BottomRight - m_TopLeft).Y();
 		}
+        
+        Vec2 Size()
+        {
+            return m_BottomRight - m_TopLeft;
+        }
 
 		T m_TopLeft;
 		T m_BottomRight;

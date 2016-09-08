@@ -82,7 +82,27 @@ namespace Thor
 			return ThDim(m_Rel / rhs, m_Abs / rhs);
 		}
         
-        float Dimension(int size)
+        bool operator==(const ThDim& rhs)const
+        {
+            return (m_Rel == rhs.m_Rel) && (m_Abs == rhs.m_Abs);
+        }
+        
+        bool operator!=(const ThDim& rhs)const
+        {
+            return !(*this == rhs);
+        }
+        
+        bool operator<(const ThDim& rhs)const
+        {
+            return (m_Rel + m_Abs) < (rhs.m_Rel + rhs.m_Abs);
+        }
+        
+        bool operator>(const ThDim& rhs)const
+        {
+            return (m_Rel + m_Abs) < (rhs.m_Rel + rhs.m_Abs);
+        }
+        
+        float AbsoluteDimension(float size)
         {
             return m_Rel * size + m_Abs;
         }

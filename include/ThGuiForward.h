@@ -6,6 +6,7 @@
 #include "ThColor.h"
 #include "ThFlags.h"
 #include "ThRange.h"
+#include "ThLayer.h"
 #include <stdint.h>
 #include <memory>
 
@@ -70,4 +71,11 @@ namespace Thor
 		LayoutRequired = 1 << 0,
         ProcessInput = 1 << 1
 	};
+    
+    enum class RenderShape : uint32_t
+    {
+        Line,
+        Quad,
+        Text
+    };
 }

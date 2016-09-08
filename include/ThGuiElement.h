@@ -13,8 +13,8 @@ namespace Thor
         virtual ~ThGuiElement();
         virtual void Layout(const ThRectf& parentArea);
         virtual void ProcessInput();
-        virtual void Render();
-        virtual WidgetType GetType() = 0;
+        virtual void Render(ThCommandBuffer& cmd, int16_t depth);
+        virtual WidgetType GetType()const;
         
         bool PushChild(ThGuiElementPtr child);
         ThGuiElementPtr GetChild(ThElementID child);
@@ -67,5 +67,7 @@ namespace Thor
         ThRectf m_RealRect;
         ThColor m_Color;
         ThTexHandle m_Texture;
+        ThColor m_BorderColor;
+        float m_BorderWidth;
     };
 }
