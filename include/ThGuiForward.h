@@ -4,6 +4,8 @@
 #include "ThRect.h"
 #include "ThDim.h"
 #include "ThColor.h"
+#include "ThFlags.h"
+#include "ThRange.h"
 #include <stdint.h>
 #include <memory>
 
@@ -13,6 +15,7 @@ namespace Thor
 	typedef ThVec2<ThDim> ThDim2;
 	typedef ThRect<ThVec2f> ThRectf;
 	typedef ThRect<ThDim2> ThDimRect;
+    typedef ThFlags<uint32_t> ThFlags32;
 	typedef uint32_t ThTexHandle;
 	typedef uint32_t ThElementID;
 
@@ -62,8 +65,9 @@ namespace Thor
 		Panel
 	};
 
-	enum class WidgetFlag : uint32_t
+	enum class WidgetState : uint32_t
 	{
-		FillParent = 1 << 0
+		LayoutRequired = 1 << 0,
+        ProcessInput = 1 << 1
 	};
 }

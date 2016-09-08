@@ -9,7 +9,10 @@ using namespace Thor;
 
 // Pointer to the HGE interface.
 // Helper classes require this to work.
-HGE* g_Hge = 0;
+uint32_t g_screenWidth = 800;
+uint32_t g_screenHeight = 600;
+
+HGE* g_Hge = nullptr;
 ThGuiContextPtr g_GuiCtx;
 
 // Pointers to the HGE objects we will use
@@ -28,15 +31,19 @@ bool FrameFunc()
 	// Process keys
 	if (g_Hge->Input_GetKeyState(HGEK_ESCAPE))
 	{
-		g_GuiCtx = nullptr;
 		return true;
 	}
+    
+    if (g_GuiCtx)
+        g_GuiCtx->Update();
 
 	return false;
 }
 
 bool RenderFunc()
 {
+    if (g_GuiCtx)
+        g_GuiCtx->Render();
 	// Render graphics
 	g_Hge->Gfx_BeginScene();
 	g_Hge->Gfx_Clear(0);
@@ -50,6 +57,12 @@ bool RenderFunc()
 
 void ShutDown()
 {
+    if (g_GuiCtx)
+    {
+        g_GuiCtx->ShutDown();
+        g_GuiCtx = nullptr;
+    }
+    
 	g_Hge->System_Shutdown();
 	g_Hge->Release();
 }
@@ -64,12 +77,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	g_Hge->System_SetState(HGE_TITLE, "Sample app");
 	g_Hge->System_SetState(HGE_FPS, 100);
 	g_Hge->System_SetState(HGE_WINDOWED, true);
-	g_Hge->System_SetState(HGE_SCREENWIDTH, 800);
-	g_Hge->System_SetState(HGE_SCREENHEIGHT, 600);
+	g_Hge->System_SetState(HGE_SCREENWIDTH, g_screenWidth);
+	g_Hge->System_SetState(HGE_SCREENHEIGHT, g_screenHeight);
 	g_Hge->System_SetState(HGE_SCREENBPP, 32);
 
 	if(g_Hge->System_Initiate()) 
 	{
+        g_GuiCtx = new ThGuiContextHge(g_Hge);
+        g_GuiCtx->Init();
+        ThRectf drawArea(ThVec2f(0.0,0.0), ThVec2f(g_screenWidth, g_screenHeight));
+        g_GuiCtx->SetDrawArea(drawArea);
+        
 		tex = g_Hge->Texture_Load("particles.png");
 		if(!tex)
 		{
