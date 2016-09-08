@@ -1,4 +1,5 @@
 #include "ThGuiContext.h"
+#include "ThGuiElement.h"
 
 using namespace Thor;
 
@@ -6,7 +7,7 @@ ThGuiContext::ThGuiContext()
     :
 m_LastElementID(0)
 {
-    
+	m_Root = std::make_shared<ThGuiElement>(this);
 }
 
 ThGuiContext::~ThGuiContext()
@@ -48,6 +49,7 @@ void ThGuiContext::Update()
 
 void ThGuiContext::Render()
 {
-    m_Root->Render();
+	m_RenderBuf.Reset();
+    m_Root->Render(m_RenderBuf, 0);
     RenderImpl();
 }

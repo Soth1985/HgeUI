@@ -12,13 +12,13 @@ namespace Thor
         {
             
         }
-		ThFlags m_State;
+		ThFlags32 m_State;
 		float m_TimeSinceStateChange;
 	};
 
 	struct ThMouse
 	{
-		ThButtonState m_Buttons[MouseButton::NumButtons];
+		ThButtonState m_Buttons[(int32_t)MouseButton::NumButtons];
 		ThVec2f m_Pos;
 		float m_Wheel;
 	};
@@ -27,17 +27,17 @@ namespace Thor
 	{
         bool GetMouseButtonState(MouseButton btn, uint32_t state)
         {
-            return m_Mouse.m_Buttons[btn].m_State.CheckFlag(state);
+            return m_Mouse.m_Buttons[(int32_t)btn].m_State.CheckFlag(state);
         }
         
-        bool SetMouseButtonState(MouseButton btn, bool enable, uint32_t state)
+        void SetMouseButtonState(MouseButton btn, bool enable, uint32_t state)
         {
             bool oldState = GetMouseButtonState(btn, state);
             
             if (oldState != enable)
             {
-                m_Mouse.m_Buttons[btn].m_State.SetFlag(enable, state);
-                m_Mouse.m_Buttons[btn].m_State.m_TimeSinceStateChange = 0.0;
+                m_Mouse.m_Buttons[(int32_t)btn].m_State.SetFlag(enable, state);
+                m_Mouse.m_Buttons[(int32_t)btn].m_TimeSinceStateChange = 0.0;
             }            
         }
         

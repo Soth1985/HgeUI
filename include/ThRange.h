@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 namespace Thor
 {
 
@@ -17,8 +19,8 @@ public:
 
 	Range(float min, float max)
 	{
-		m_Min = std::min(min, max);
-		m_Max = std::max(min, max);
+		m_Min = (std::min)(min, max);
+		m_Max = (std::max)(min, max);
 	}
 
 	bool Overlap(const Range& r)const

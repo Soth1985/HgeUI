@@ -59,7 +59,7 @@ void ShutDown()
 {
     if (g_GuiCtx)
     {
-        g_GuiCtx->ShutDown();
+        g_GuiCtx->Shutdown();
         g_GuiCtx = nullptr;
     }
     
@@ -83,7 +83,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	if(g_Hge->System_Initiate()) 
 	{
-        g_GuiCtx = new ThGuiContextHge(g_Hge);
+        g_GuiCtx = std::make_shared<ThGuiContextHge>(g_Hge);
         g_GuiCtx->Init();
         ThRectf drawArea(ThVec2f(0.0,0.0), ThVec2f(g_screenWidth, g_screenHeight));
         g_GuiCtx->SetDrawArea(drawArea);

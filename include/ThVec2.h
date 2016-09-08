@@ -42,27 +42,27 @@ namespace Thor
 			return m_Y;
 		}
 
-		ThVec2 operator+(const ThVec2& rhs)
+		ThVec2 operator+(const ThVec2& rhs)const
 		{
 			return ThVec2(m_X + rhs.m_X, m_Y + rhs.m_Y);
 		}
 
-		ThVec2 operator-(const ThVec2& rhs)
+		ThVec2 operator-(const ThVec2& rhs)const
 		{
 			return ThVec2(m_X - rhs.m_X, m_Y - rhs.m_Y);
 		}
 
-		ThVec2 operator*(const ThVec2& rhs)
+		ThVec2 operator*(const ThVec2& rhs)const
 		{
 			return ThVec2(m_X * rhs.m_X, m_Y * rhs.m_Y);
 		}
 
-		ThVec2 operator*(const T& rhs)
+		ThVec2 operator*(const T& rhs)const
 		{
 			return ThVec2(m_X * rhs, m_Y * rhs);
 		}
 
-		ThVec2 operator/(const T& rhs)
+		ThVec2 operator/(const T& rhs)const
 		{
 			return ThVec2(m_X / rhs, m_Y / rhs);
 		}

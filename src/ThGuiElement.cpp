@@ -2,6 +2,7 @@
 
 #include "ThGuiElement.h"
 #include "ThGuiContext.h"
+#include "ThGuiUtil.h"
 
 using namespace Thor;
 
@@ -13,7 +14,7 @@ m_LayoutRect(ThDim2(ThDim(0.0, 0), ThDim(0.0, 0)), ThDim2(ThDim(1.0, 0), ThDim(1
 m_Color(128, 128, 128, 255),
 m_Texture(0)
 {
-    m_ID = m_Context->GenerateElementID();
+    m_ID = m_Context->GenElementID();
 }
 
 ThGuiElement::~ThGuiElement()
@@ -47,9 +48,9 @@ void ThGuiElement::ProcessInput()
     }
 }
 
-void ThGuiElement::Render(ThCommandBuffer& cmd, int16_t depth)
+void ThGuiElement::Render(ThCommandBuffer& cmd, uint16_t depth)
 {
-    if (GetNumChildren > 0)
+    if (GetNumChildren() > 0)
     {
         cmd.PushState(m_RealRect);
     }
@@ -61,14 +62,14 @@ void ThGuiElement::Render(ThCommandBuffer& cmd, int16_t depth)
     {
         ThVec2f size = m_RealRect.Size();
         ThVec2f topLeft = m_RealRect.TopLeft();
-        ThVec2f topRight = topLeft + size.X();
-        ThVec2f bottomRight = topRight - size.Y();
-        ThVec2f bottomLeft = bottomRight - size.X();
+		ThVec2f topRight = topLeft + ThVec2f(size.X(), 0.0);
+        ThVec2f bottomRight = topRight - ThVec2f(0.0, size.Y());
+        ThVec2f bottomLeft = bottomRight - ThVec2f(size.X(), 0.0);
         
-        cmd.AddLine(topLeft, topRight, m_BorderWidth, m_BorderColor);
-        cmd.AddLine(topRight, bottomRight, m_BorderWidth, m_BorderColor);
-        cmd.AddLine(bottomRight, bottomLeft, m_BorderWidth, m_BorderColor);
-        cmd.AddLine(bottomLeft, topLeft, m_BorderWidth, m_BorderColor);
+        cmd.AddLine(topLeft, topRight, m_BorderWidth, layer, m_BorderColor);
+        cmd.AddLine(topRight, bottomRight, m_BorderWidth, layer, m_BorderColor);
+        cmd.AddLine(bottomRight, bottomLeft, m_BorderWidth, layer, m_BorderColor);
+        cmd.AddLine(bottomLeft, topLeft, m_BorderWidth, layer, m_BorderColor);
     }
     
     for (size_t i = 0; i < m_Children.size(); ++i)
@@ -76,7 +77,7 @@ void ThGuiElement::Render(ThCommandBuffer& cmd, int16_t depth)
         return m_Children[i]->Render(cmd, depth + 1);
     }
     
-    if (GetNumChildren > 0)
+    if (GetNumChildren() > 0)
     {
         cmd.PopState();
     }
@@ -103,7 +104,7 @@ ThGuiElementPtr ThGuiElement::GetChild(ThElementID child)
 {
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
-        if (m_Children[i]->GetElementID() == child->GetElementID())
+        if (m_Children[i]->GetElementID() == child)
             return m_Children[i];
     }
     
@@ -153,7 +154,7 @@ void ThGuiElement::GetChildrenByNameRecursive(const std::string& name, ChildrenC
     
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
-        m_Children[i]->GetGetChildrenByNameRecursive(name, children);
+        m_Children[i]->GetChildrenByNameRecursive(name, children);
     }
 }
 
@@ -213,7 +214,7 @@ void ThGuiElement::SetName(const std::string& name)
     m_Name = name;
 }
 
-void ThGuiElement::IsStateSet(uint32_t state)
+bool ThGuiElement::IsStateSet(uint32_t state)
 {
     return m_State.CheckFlag(state);
 }

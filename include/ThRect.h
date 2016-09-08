@@ -7,8 +7,8 @@ namespace Thor
 	template <class T>
 	struct ThRect
 	{
-		typedef T ValueType;
-        typedef ThVec2<T> Vec2;
+		typedef typename T::ValueType ValueType;
+        typedef ThVec2<ValueType> Vec2;
 
 		ThRect()
 		{
@@ -53,7 +53,7 @@ namespace Thor
 			return (m_BottomRight - m_TopLeft).Y();
 		}
         
-        Vec2 Size()
+        Vec2 Size()const
         {
             return m_BottomRight - m_TopLeft;
         }

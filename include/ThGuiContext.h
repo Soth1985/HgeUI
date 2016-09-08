@@ -1,7 +1,9 @@
 #pragma once
 
 #include "ThGuiForward.h"
+#include "ThCommandBuffer.h"
 #include "ThInput.h"
+#include <string>
 
 namespace Thor
 {
@@ -12,7 +14,7 @@ namespace Thor
 		virtual ~ThGuiContext();
 		virtual ThTexHandle CreateTexture(const std::string& name) = 0;
         virtual bool Init() = 0;
-        virtual void ShutDown() = 0;
+        virtual void Shutdown() = 0;
         virtual void Log(const char* format, ...) = 0;
         ThElementID GenElementID();
         void SetDrawArea(const ThRectf& area);
@@ -30,6 +32,7 @@ namespace Thor
 		ThRectf m_DrawArea;
 		ThGuiElementPtr m_Root;
 		ThElementID m_LastElementID;
+		ThCommandBuffer m_RenderBuf;
         float m_DeltaTime;
 	};
 }

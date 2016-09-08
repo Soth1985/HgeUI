@@ -30,7 +30,7 @@ namespace Thor
                 m_BitField &= ~flag;
         }
         
-        ThBool	CheckFlag(T flag)const
+        bool	CheckFlag(T flag)const
         {
             return ( m_BitField & flag ) == flag;
         }

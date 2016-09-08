@@ -12,11 +12,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\ThCommandBuffer.cpp" />
+    <ClCompile Include="..\src\ThGuiContext.cpp" />
+    <ClCompile Include="..\src\ThGuiContextHge.cpp" />
+    <ClCompile Include="..\src\ThGuiElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\ThColor.h" />
+    <ClInclude Include="..\include\ThCommandBuffer.h" />
     <ClInclude Include="..\include\ThDelegate.h" />
     <ClInclude Include="..\include\ThDim.h" />
+    <ClInclude Include="..\include\ThFlags.h" />
     <ClInclude Include="..\include\ThGui.h" />
     <ClInclude Include="..\include\ThGuiButton.h" />
     <ClInclude Include="..\include\ThGuiContext.h" />
@@ -24,7 +30,10 @@
     <ClInclude Include="..\include\ThGuiForward.h" />
     <ClInclude Include="..\include\ThGuiImage.h" />
     <ClInclude Include="..\include\ThGuiContextHge.h" />
+    <ClInclude Include="..\include\ThGuiUtil.h" />
     <ClInclude Include="..\include\ThInput.h" />
+    <ClInclude Include="..\include\ThLayer.h" />
+    <ClInclude Include="..\include\ThRange.h" />
     <ClInclude Include="..\include\ThRect.h" />
     <ClInclude Include="..\include\ThVec2.h" />
   </ItemGroup>

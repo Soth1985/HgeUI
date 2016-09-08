@@ -1,19 +1,22 @@
 #pragma once
 
 #include "ThGuiForward.h"
+#include "ThCommandBuffer.h"
 #include "ThDelegate.h"
 #include <vector>
 
 namespace Thor
 {
-    class ThGuiElement : std::enable_shared_from_this<ThGuiContext>
+    class ThGuiElement : std::enable_shared_from_this<ThGuiElement>
     {
+	private:
+		typedef std::vector<ThGuiElementPtr> ChildrenContainer;
     public:
         ThGuiElement(ThGuiContext* context);
         virtual ~ThGuiElement();
         virtual void Layout(const ThRectf& parentArea);
         virtual void ProcessInput();
-        virtual void Render(ThCommandBuffer& cmd, int16_t depth);
+        virtual void Render(ThCommandBuffer& cmd, uint16_t depth);
         virtual WidgetType GetType()const;
         
         bool PushChild(ThGuiElementPtr child);
@@ -31,7 +34,7 @@ namespace Thor
         ThElementID GetElementID()const;
         const std::string& GetName()const;
         void SetName(const std::string& name);
-        void IsStateSet(uint32_t state);
+        bool IsStateSet(uint32_t state);
         void SetState(bool enable, uint32_t state);
         void SetStateRecursive(bool enable, uint32_t state);
         const ThDim2& GetPosition()const;
@@ -54,8 +57,7 @@ namespace Thor
         OnMouseLeaveDel md_OnMouseLeave;
         OnMouseButtonPressedDel md_OnMouseButtonPressed;
         OnMouseButtonReleasedDel md_OnMouseButtonReleased;
-    protected:
-        typedef std::vector<ThGuiElementPtr> ChildrenContainer;
+    protected:        
         
         ThGuiElement* m_Parent;
         ThGuiContext* m_Context;
@@ -68,6 +70,7 @@ namespace Thor
         ThColor m_Color;
         ThTexHandle m_Texture;
         ThColor m_BorderColor;
+		uint16_t m_Layer;
         float m_BorderWidth;
     };
 }

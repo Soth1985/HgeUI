@@ -30,7 +30,7 @@ namespace Thor
 	class ThGuiImage;
 	class ThGuiPanel;
 
-	enum class Anchor : uint32_t
+	enum class Anchor : int32_t
 	{		
 		TopLeft,
 		Top,
@@ -44,7 +44,7 @@ namespace Thor
 		NumAnchors
 	};
 
-	enum class MouseButton : uint32_t
+	enum class MouseButton : int32_t
 	{
 		Left,
 		Middle,
@@ -52,27 +52,27 @@ namespace Thor
 		NumButtons
 	};
 
-	enum class InputButtonState : uint32_t
+	enum class InputButtonState : int32_t
 	{
 		Down = 1<<0,
 		JustPressed = 1<<1,
 		JustReleased = 1<<2
 	};
 
-	enum class WidgetType : uint32_t
+	enum class WidgetType : int32_t
 	{
 		Button,
 		Image,
 		Panel
 	};
 
-	enum class WidgetState : uint32_t
+	enum class WidgetState : int32_t
 	{
 		LayoutRequired = 1 << 0,
         ProcessInput = 1 << 1
 	};
     
-    enum class RenderShape : uint32_t
+    enum class RenderShape : int32_t
     {
         Line,
         Quad,

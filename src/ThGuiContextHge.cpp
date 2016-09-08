@@ -1,6 +1,6 @@
 #include "ThGuiContextHge.h"
 
-using namespace Thor
+using namespace Thor;
 
 ThGuiContextHge::ThGuiContextHge(HGE* hge)
     :
@@ -16,15 +16,18 @@ bool ThGuiContextHge::Init()
 
 void ThGuiContextHge::Shutdown()
 {
-    for (auto it = m_Textures.begin(); i != m_Textures.end(); ++it)
+    for (auto it = m_Textures.begin(); it != m_Textures.end(); ++it)
     {
         m_Hge->Texture_Free(it->second);
     }
 }
 
-void Log(const char* format, ...)override
+void ThGuiContextHge::Log(const char* format, ...)
 {
-    m_Hge->System_Log(format, ...);
+	va_list args;
+	va_start(args, format);
+    m_Hge->System_Log(format, args);
+	va_end(args);
 }
 
 ThTexHandle ThGuiContextHge::CreateTexture(const std::string& name)
@@ -62,30 +65,30 @@ void ThGuiContextHge::UpdateInputImpl()
     
     static KeyMap mouseKeys[] =
     {
-        {Left, HGEK_LBUTTON},
-        {Middle, HGEK_MBUTTON},
-        {Right, HGEK_RBUTTON},
+        {MouseButton::Left, HGEK_LBUTTON},
+        {MouseButton::Middle, HGEK_MBUTTON},
+        {MouseButton::Right, HGEK_RBUTTON},
     };
     
     static int32_t numMouseButtons = sizeof (mouseKeys) / sizeof (KeyMap);
     
     for (int32_t i = 0; i < numMouseButtons; ++i)
     {
-        m_Input.SetMouseButtonState(mouseKeys[i].from, false, InputButtonState::JustPressed);
-        m_Input.SetMouseButtonState(mouseKeys[i].from, false, InputButtonState::JustReleased);
+        m_Input.SetMouseButtonState(mouseKeys[i].from, false, (int32_t)InputButtonState::JustPressed);
+        m_Input.SetMouseButtonState(mouseKeys[i].from, false, (int32_t)InputButtonState::JustReleased);
         bool newState = m_Hge->Input_GetKeyState(mouseKeys[i].to);
-        bool oldState = m_Input.GetMouseButtonState(mouseKeys[i].from, InputButtonState::Down);
+        bool oldState = m_Input.GetMouseButtonState(mouseKeys[i].from, (int32_t)InputButtonState::Down);
         
         if (newState != oldState)
         {
             if (newState)
             {
-                m_Input.SetMouseButtonState(mouseKeys[i].from, true, InputButtonState::Down | InputButtonState::JustPressed);
+                m_Input.SetMouseButtonState(mouseKeys[i].from, true, (int32_t)InputButtonState::Down | (int32_t)InputButtonState::JustPressed);
             }
             else
             {
-                m_Input.SetMouseButtonState(mouseKeys[i].from, false, InputButtonState::Down);
-                m_Input.SetMouseButtonState(mouseKeys[i].from, true, InputButtonState::JustPressed);
+                m_Input.SetMouseButtonState(mouseKeys[i].from, false, (int32_t)InputButtonState::Down);
+                m_Input.SetMouseButtonState(mouseKeys[i].from, true, (int32_t)InputButtonState::JustPressed);
             }
         }
     }

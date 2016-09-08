@@ -2,6 +2,7 @@
 
 #include "ThGuiForward.h"
 #include <vector>
+#include <stack>
 
 namespace Thor
 {
@@ -30,7 +31,12 @@ namespace Thor
     
     struct ThDrawShapeCmd
     {
-        bool operator<(const ThDrawShapeCmd& rhs)
+		ThDrawShapeCmd()
+		{
+
+		}
+
+        bool operator<(const ThDrawShapeCmd& rhs)const
         {
             return m_Layer < rhs.m_Layer;
         }

@@ -57,29 +57,29 @@ namespace Thor
 			return m_Abs;
 		}
 
-		ThDim operator+(const ThDim& rhs)
+		ThDim operator+(const ThDim& rhs)const
 		{
 			return ThDim(m_Rel + rhs.m_Rel, m_Abs + rhs.m_Abs);
 		}
 
-		ThDim operator-(const ThDim& rhs)
+		ThDim operator-(const ThDim& rhs)const
 		{
 			return ThDim(m_Rel - rhs.m_Rel, m_Abs - rhs.m_Abs);
 		}
 
-		ThDim operator*(const ThDim& rhs)
+		ThDim operator*(const ThDim& rhs)const
 		{
 			return ThDim(m_Rel * rhs.m_Rel, m_Abs * rhs.m_Abs);
 		}
 
-		ThDim operator*(float rhs)
+		ThDim operator*(float rhs)const
 		{
-			return ThDim(m_Rel * rhs, m_Abs * rhs);
+			return ThDim(m_Rel * rhs, (int32_t)(m_Abs * rhs));
 		}
 
-		ThDim operator/(float rhs)
+		ThDim operator/(float rhs)const
 		{
-			return ThDim(m_Rel / rhs, m_Abs / rhs);
+			return ThDim(m_Rel / rhs, (int32_t)(m_Abs / rhs));
 		}
         
         bool operator==(const ThDim& rhs)const
@@ -102,7 +102,7 @@ namespace Thor
             return (m_Rel + m_Abs) < (rhs.m_Rel + rhs.m_Abs);
         }
         
-        float AbsoluteDimension(float size)
+        float AbsoluteDimension(float size)const
         {
             return m_Rel * size + m_Abs;
         }

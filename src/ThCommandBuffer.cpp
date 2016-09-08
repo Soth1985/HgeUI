@@ -23,14 +23,14 @@ void ThCommandBuffer::PopState()
 
 void ThCommandBuffer::AddQuad(const ThRectf& shape, ThTexHandle tex, ThLayer layer, const ThColor& color)
 {
-    m_Shapes.push_back(ThDrawShapeCmd());
-    ThDrawShapeCmd cmd = m_Shapes.back();
+	ThDrawShapeCmd cmd;
     cmd.m_Quad.m_Shape = shape;
     cmd.m_Quad.m_Texture = tex;
     cmd.m_ShapeType = RenderShape::Quad;
     cmd.m_Color = color;
     cmd.m_Layer = layer;
     cmd.m_StateIndex = m_StateStack.top();
+	m_Shapes.push_back(cmd);
 }
 
 void ThCommandBuffer::AddLine(const ThVec2f& from, const ThVec2f& to, float width, ThLayer layer, const ThColor& color)
@@ -55,6 +55,11 @@ void ThCommandBuffer::Reset()
 {
     m_States.clear();
     m_Shapes.clear();
-    m_CurState.clear();
-    m_CurState.push(-1);
+
+	while (!m_StateStack.empty())
+	{
+		m_StateStack.pop();
+	}
+	
+	m_StateStack.push(-1);
 }
