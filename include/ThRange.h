@@ -5,46 +5,47 @@
 namespace Thor
 {
 
-class Range
+template <class T>
+class ThRange
 {
 public:
 
-	Range()
+	ThRange()
 		:
-	m_Min(0.0f),
-	m_Max(0.0f)
+	m_Min(0.0),
+	m_Max(0.0)
 	{
 
 	}
 
-	Range(float min, float max)
+	ThRange(T min, T max)
 	{
 		m_Min = (std::min)(min, max);
 		m_Max = (std::max)(min, max);
 	}
 
-	bool Overlap(const Range& r)const
+	bool Overlap(const ThRange& r)const
 	{
 		return r.GetMin() <= m_Max && m_Min <= r.GetMax();
 	}
 
-	void Join(const Range& r)
+	void Join(const ThRange& r)
 	{
 		m_Min = m_Min < r.GetMin() ? m_Min : r.GetMin();
 		m_Max = m_Max > r.GetMax() ? m_Max : r.GetMax();
 	}
 
-	float GetMin()const
+	T GetMin()const
 	{
 		return m_Min;
 	}
 
-	float GetMax()const
+	T GetMax()const
 	{
 		return m_Max;
 	}
     
-    float Clamp(float val)
+    T Clamp(T val)
     {
         if (val < m_Min)
             return m_Min;
@@ -56,8 +57,8 @@ public:
 
 private:
 
-	float m_Min;
-	float m_Max;
+	T m_Min;
+	T m_Max;
 };
 
 }

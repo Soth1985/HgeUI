@@ -1,5 +1,6 @@
 #include "ThGuiContextHge.h"
 #include "ThGuiUtil.h"
+#include "hgefont.h"
 
 using namespace Thor;
 
@@ -21,6 +22,11 @@ void ThGuiContextHge::Shutdown()
     {
         m_Hge->Texture_Free(it->second);
     }
+    
+    for (auto it = m_Fonts.begin(); it != m_Fonts.end(); ++it)
+    {
+        delete it->second;
+    }
 }
 
 void ThGuiContextHge::Log(const char* format, ...)
@@ -29,6 +35,30 @@ void ThGuiContextHge::Log(const char* format, ...)
 	va_start(args, format);
     m_Hge->System_Log(format, args);
 	va_end(args);
+}
+
+ThFontHandle ThGuiContextHge::CreateFont(const std::string& name)
+{
+    auto found = m_Fonts.find(name);
+    
+    if (found != m_Fonts.end())
+        return found->second;
+    
+    hgeFont* result = new hgeFont(name);
+    m_Fonts[name] = result;
+    return (ThFontHandle)result;
+}
+
+float ThGuiContextHge::GetFontHeight(ThFontHandle font)
+{
+    hgeFont* fontHge = (hgeFont*)font;
+    return fontHge->GetHeight()
+}
+
+float ThGuiContextHge::GetStringWidth(ThFontHandle font, const std::string& text)
+{
+    hgeFont* fontHge = (hgeFont*)font;
+    return fontHge->GetStringWidth(text.c_str());
 }
 
 ThTexHandle ThGuiContextHge::CreateTexture(const std::string& name)

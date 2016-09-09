@@ -18,6 +18,7 @@ namespace Thor
 	typedef ThRect<ThDim2> ThDimRect;
     typedef ThFlags<uint32_t> ThFlags32;
 	typedef uint32_t ThTexHandle;
+    typedef uint32_t ThFontHandle;
 	typedef uint32_t ThElementID;
 
 	class ThGuiContext;
@@ -63,13 +64,16 @@ namespace Thor
 	{
 		Button,
 		Image,
-		Panel
+		Panel,
+        Text
 	};
 
 	enum class WidgetState : int32_t
 	{
 		LayoutRequired = 1 << 0,
-        ProcessInput = 1 << 1
+        ProcessInput = 1 << 1,
+        RenderWidget = 1 << 2,
+        Clipped = 1 << 3
 	};
     
     enum class RenderShape : int32_t

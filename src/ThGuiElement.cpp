@@ -24,8 +24,9 @@ ThGuiElement::~ThGuiElement()
     
 }
 
-void ThGuiElement::Layout(const ThRectf& parentArea)
+void ThGuiElement::LayoutRecursive(const ThRectf& parentArea)
 {
+    SetState(false, WidgetState::Clipped);
     ThVec2f parentSize = parentArea.Size();
     ThDim2 relPos = GetPosition();
     ThDim2 relSize = GetSize();
@@ -41,19 +42,25 @@ void ThGuiElement::Layout(const ThRectf& parentArea)
     m_RealRect.TopLeft() = absPos;
     m_RealRect.BottomRight() = absPos + absSize;
     
+    if ((m_RealRect.Area() == 0.0) || !parentArea.Intersects(m_RealRect))
+        SetState(true, WidgetState::Clipped);
+    
     //TODO anchor solver
     
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
-        return m_Children[i]->Layout(m_RealRect);
+        return m_Children[i]->LayoutRecursive(m_RealRect);
     }
 }
 
-void ThGuiElement::ProcessInput()
+void ThGuiElement::ProcessInputRecursive()
 {
+    if (GetState(WidgetState::Clipped))
+        return;
+    
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
-        return m_Children[i]->ProcessInput();
+        return m_Children[i]->ProcessInputRecursive();
     }
 
 	if (m_Context->GetActiveElement() == nullptr)
@@ -65,32 +72,40 @@ void ThGuiElement::ProcessInput()
 	}
 }
 
-void ThGuiElement::Render(ThCommandBuffer& cmd, uint16_t depth)
+void ThGuiElement::RenderElement(ThCommandBuffer& cmd, uint16_t depth)
 {
-    if (GetNumChildren() > 0)
-    {
-        cmd.PushState(m_RealRect);
-    }
-    
     ThLayer layer(m_Layer, depth);
-
-	if (m_Color.m_A > 0)
-		cmd.AddQuad(m_RealRect, m_Texture, layer, m_Color);
     
+    if (m_Color.m_A > 0)
+        cmd.AddQuad(m_RealRect, m_Texture, layer, m_Color);
+        
     if (m_BorderWidth > 0 && m_BorderColor.m_A > 0)
     {
-		ThVec2f rectPoints[4];
-		Util::DecomposeRect(m_RealRect, rectPoints);
-                
+        ThVec2f rectPoints[4];
+        Util::DecomposeRect(m_RealRect, rectPoints);
+        
         cmd.AddLine(rectPoints[0], rectPoints[1], m_BorderWidth, layer, m_BorderColor);
         cmd.AddLine(rectPoints[1], rectPoints[2], m_BorderWidth, layer, m_BorderColor);
         cmd.AddLine(rectPoints[2], rectPoints[3], m_BorderWidth, layer, m_BorderColor);
         cmd.AddLine(rectPoints[3], rectPoints[0], m_BorderWidth, layer, m_BorderColor);
     }
+}
+
+void ThGuiElement::RenderRecursive(ThCommandBuffer& cmd, uint16_t depth)
+{
+    if (GetState(WidgetState::Clipped))
+        return;
+    
+    if (GetNumChildren() > 0)
+    {
+        cmd.PushState(m_RealRect);
+    }
+    
+    RenderElement(cmd, depth);
     
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
-        return m_Children[i]->Render(cmd, depth + 1);
+        return m_Children[i]->RenderRecursive(cmd, depth + 1);
     }
     
     if (GetNumChildren() > 0)

@@ -35,8 +35,7 @@ void ThCommandBuffer::AddQuad(const ThRectf& shape, ThTexHandle tex, ThLayer lay
 
 void ThCommandBuffer::AddLine(const ThVec2f& from, const ThVec2f& to, float width, ThLayer layer, const ThColor& color)
 {
-    m_Shapes.push_back(ThDrawShapeCmd());
-    ThDrawShapeCmd cmd = m_Shapes.back();
+    ThDrawShapeCmd cmd;
     cmd.m_Line.m_From = from;
     cmd.m_Line.m_To = to;
     cmd.m_Line.m_Width = width;
@@ -44,6 +43,17 @@ void ThCommandBuffer::AddLine(const ThVec2f& from, const ThVec2f& to, float widt
     cmd.m_Color = color;
     cmd.m_Layer = layer;
     cmd.m_StateIndex = m_StateStack.top();
+    m_Shapes.push_back(cmd);
+}
+
+void ThCommandBuffer::AddText(const char* str, const ThVec2f& pos, ThFontHandle font, float scale)
+{
+    ThDrawShapeCmd cmd;
+    cmd.m_Text.m_Font = font;
+    cmd.m_Text.m_Pos = pos;
+    cmd.m_Text.m_Scale = scale;
+    cmd.m_Text.m_Str = str;
+    m_Shapes.push_back(cmd);
 }
 
 void ThCommandBuffer::SortByLayer()

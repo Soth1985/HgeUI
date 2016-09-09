@@ -10,15 +10,13 @@ using namespace Thor;
 bool FrameFunc();
 bool RenderFunc();
 
-// Pointers to the HGE objects we will use
-hgeFont*			fnt;
-
 class ThSampleApp
 {
 public:
 	ThSampleApp()
 		:
-	m_Hge(nullptr)
+	m_Hge(nullptr),
+    m_Cursor(nullptr)
 	{
 
 	}
@@ -44,10 +42,9 @@ public:
 			ThRectf drawArea(ThVec2f(0.0, 0.0), ThVec2f(screenWidth, screenHeight));
 			m_GuiCtx->SetDrawArea(drawArea);
 
-			// Load a font
-			fnt = new hgeFont("font1.fnt");
-
-			// Let's rock now!
+			m_Font = m_GuiCtx->CreateFont("font1.fnt");
+            ThTexHandle cursorTex = m_GuiCtx->CreateTexture("cursor.png");
+            m_Cursor = new hgeSprite(cursorTex, 0, 0, 32, 32);
 			m_Hge->System_Start();			
 		}
 
@@ -56,8 +53,6 @@ public:
 
 	bool Update()
 	{
-		float dt = m_Hge->Timer_GetDelta();
-
 		// Process keys
 		if (m_Hge->Input_GetKeyState(HGEK_ESCAPE))
 		{
@@ -79,6 +74,8 @@ public:
 			m_GuiCtx->Render();
 
 		fnt->printf(5, 5, HGETEXT_LEFT, "dt:%.3f\nFPS:%d (constant)", m_Hge->Timer_GetDelta(), m_Hge->Timer_GetFPS());
+        ThVec2f mousePos = m_GuiCtx->GetInput().GetMousePos();
+        m_Cursor->Render(mousePos.X(), mousePos.Y());
 		m_Hge->Gfx_EndScene();
 
 		return false;
@@ -91,12 +88,14 @@ private:
 			m_GuiCtx->Shutdown();
 			m_GuiCtx = nullptr;
 		}
-		delete fnt;
+		delete m_Cursor;
 		m_Hge->System_Shutdown();
 		m_Hge->Release();
 	}
 
 	HGE* m_Hge;
+    hgeSprite* m_Cursor;
+    ThFontHandle m_Font;
 	ThGuiContextPtr m_GuiCtx;
 };
 

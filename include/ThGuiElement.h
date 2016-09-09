@@ -14,11 +14,11 @@ namespace Thor
     public:
         ThGuiElement(ThGuiContext* context);
         virtual ~ThGuiElement();
-        virtual void Layout(const ThRectf& parentArea);
-        virtual void ProcessInput();
-        virtual void Render(ThCommandBuffer& cmd, uint16_t depth);
+        virtual void LayoutRecursive(const ThRectf& parentArea);
+        virtual void ProcessInputRecursive();
         virtual WidgetType GetType()const;
         
+        void RenderRecursive(ThCommandBuffer& cmd, uint16_t depth);
         bool PushChild(ThGuiElementPtr child);
         ThGuiElementPtr GetChild(ThElementID child);
         ThGuiElementPtr GetChildRecursive(ThElementID child);
@@ -61,7 +61,8 @@ namespace Thor
         OnMouseLeaveDel md_OnMouseLeave;
         OnMouseButtonPressedDel md_OnMouseButtonPressed;
         OnMouseButtonReleasedDel md_OnMouseButtonReleased;
-    protected:        
+    protected:
+        virtual void RenderElement(ThCommandBuffer& cmd, uint16_t depth);
         
         ThGuiElement* m_Parent;
         ThGuiContext* m_Context;

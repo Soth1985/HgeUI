@@ -65,6 +65,24 @@ namespace Thor
 					(point.Y() >= m_TopLeft.Y()) &&
 					(point.Y() <= m_BottomRight.Y())
 		}
+        
+        ValueType Area()const
+        {
+            Vec2 size = Size();
+            return size.X() * size.Y();
+        }
+        
+        bool Intersects(const ThRect& rhs)const
+        {
+            Vec2 size = Size();
+            Vec2 rhsSize = rhs.Size();
+            ThRange<T> rngX(m_TopLeft.X(), m_TopLeft.X() + size.X());
+            ThRange<T> rngY(m_TopLeft.Y(), m_TopLeft.Y() + size.Y());
+            ThRange<T> rhsRngX(rhs.m_TopLeft.X(), rhs.m_TopLeft.X() + rhsSize.X());
+            ThRange<T> rhsRngX(rhs.m_TopLeft.Y(), rhs.m_TopLeft.Y() + rhsSize.Y());
+            
+            return rngX.Overlaps(rhsRngX) && rngY.Overlaps(rhsRngY);
+        }
 
 		T m_TopLeft;
 		T m_BottomRight;
