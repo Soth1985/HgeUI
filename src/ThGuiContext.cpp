@@ -5,7 +5,8 @@ using namespace Thor;
 
 ThGuiContext::ThGuiContext()
     :
-m_LastElementID(0)
+m_LastElementID(0),
+m_DeltaTime(0.0)
 {
 	m_Root = std::make_shared<ThGuiElement>(this);
 }
@@ -40,10 +41,17 @@ const ThInput& ThGuiContext::GetInput()const
     return m_Input;
 }
 
+float ThGuiContext::GetDeltaTime()const
+{
+	return m_DeltaTime;
+}
+
 void ThGuiContext::Update()
 {
     UpdateInputImpl();
     m_Root->Layout(m_DrawArea);
+	m_ActiveElement = nullptr;
+	m_HotElement = nullptr;
     m_Root->ProcessInput();
 }
 
@@ -52,4 +60,24 @@ void ThGuiContext::Render()
 	m_RenderBuf.Reset();
     m_Root->Render(m_RenderBuf, 0);
     RenderImpl();
+}
+
+ThGuiElementPtr ThGuiContext::GetHotElement()
+{
+	return m_HotElement;
+}
+
+void ThGuiContext::SetHotElement(ThGuiElementPtr elem)
+{
+	m_HotElement = elem;
+}
+
+ThGuiElementPtr ThGuiContext::GetActiveElement()
+{
+	return m_ActiveElement;
+}
+
+void ThGuiContext::SetActiveElement(ThGuiElementPtr elem)
+{
+	m_ActiveElement = elem;
 }

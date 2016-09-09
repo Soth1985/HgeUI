@@ -1,4 +1,5 @@
 #include "ThGuiContextHge.h"
+#include "ThGuiUtil.h"
 
 using namespace Thor;
 
@@ -55,7 +56,7 @@ void ThGuiContextHge::UpdateInputImpl()
 {
     m_DeltaTime = m_Hge->Timer_GetDelta();
     m_Hge->Input_GetMousePos(&m_Input.m_Mouse.m_Pos.m_X, &m_Input.m_Mouse.m_Pos.m_Y);
-    m_Input.m_Mouse.m_Wheel = m_Hge->Input_GetMouseWheel();
+    m_Input.m_Mouse.m_Wheel = (float)m_Hge->Input_GetMouseWheel();
     
     struct KeyMap
     {
@@ -96,5 +97,71 @@ void ThGuiContextHge::UpdateInputImpl()
 
 void ThGuiContextHge::RenderImpl()
 {
-    
+	m_RenderBuf.SortByLayer();
+
+	//m_Hge->Gfx_BeginScene();
+
+	int32_t curState = -1;
+	for (size_t i = 0; i < m_RenderBuf.m_Shapes.size(); ++i)
+	{
+		ThDrawShapeCmd& cmd = m_RenderBuf.m_Shapes[i];
+
+		if (cmd.m_StateIndex != curState)
+		{
+			curState = cmd.m_StateIndex;
+
+			if (curState >= 0)
+			{
+				ThRenderState& state = m_RenderBuf.m_States[curState];
+				m_Hge->Gfx_SetClipping(state.m_ClipRect.TopLeft().X(), state.m_ClipRect.TopLeft().Y(), state.m_ClipRect.Width(), state.m_ClipRect.Height());
+			}
+			else
+			{
+				m_Hge->Gfx_SetClipping();
+			}
+		}
+
+		switch (cmd.m_ShapeType)
+		{
+			case RenderShape::Quad:
+			{
+				hgeQuad quad;
+				quad.tex = cmd.m_Quad.m_Texture;
+				quad.blend = BLEND_DEFAULT;
+
+				ThVec2f rectPoints[4];
+				Util::DecomposeRect(cmd.m_Quad.m_Shape, rectPoints);
+
+				quad.v[0].x = rectPoints[0].X(); quad.v[0].y = rectPoints[0].Y();
+				quad.v[0].tx = 0.0; quad.v[0].ty = 0.0;
+
+				quad.v[1].x = rectPoints[1].X(); quad.v[1].y = rectPoints[1].Y();
+				quad.v[1].tx = 1.0; quad.v[1].ty = 0.0;
+
+				quad.v[2].x = rectPoints[2].X(); quad.v[2].y = rectPoints[2].Y();
+				quad.v[2].tx = 1.0; quad.v[2].ty = 1.0;
+
+				quad.v[3].x = rectPoints[3].X(); quad.v[3].y = rectPoints[3].Y();
+				quad.v[3].tx = 0.0; quad.v[3].ty = 1.0;
+
+				quad.v[0].z = quad.v[1].z = quad.v[2].z = quad.v[3].z = 0.5f;
+				quad.v[0].col = quad.v[1].col = quad.v[2].col = quad.v[3].col = cmd.m_Color.ToArgb();
+				m_Hge->Gfx_RenderQuad(&quad);				
+				break;
+			}
+			case RenderShape::Line:
+			{
+				m_Hge->Gfx_RenderLine(cmd.m_Line.m_From.X(), cmd.m_Line.m_From.Y(), cmd.m_Line.m_To.X(), cmd.m_Line.m_To.Y(), cmd.m_Color.ToArgb());
+				break;
+			}
+			case RenderShape::Text:
+			{
+				break;
+			}
+		}
+	}
+	
+	if (!m_RenderBuf.m_States.empty())
+		m_Hge->Gfx_SetClipping();
+	//m_Hge->Gfx_EndScene();
 }

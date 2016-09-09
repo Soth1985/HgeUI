@@ -43,12 +43,12 @@ namespace Thor
 			return m_BottomRight;
 		}
 
-		T Width()const
+		ValueType Width()const
 		{
 			return (m_BottomRight - m_TopLeft).X();
 		}
 
-		T Height()const
+		ValueType Height()const
 		{
 			return (m_BottomRight - m_TopLeft).Y();
 		}
@@ -57,6 +57,14 @@ namespace Thor
         {
             return m_BottomRight - m_TopLeft;
         }
+
+		bool IsInside(const Vec2& point)const
+		{
+			return	(point.X() >= m_TopLeft.X()) && 
+					(point.X() <= m_BottomRight.X()) &&
+					(point.Y() >= m_TopLeft.Y()) &&
+					(point.Y() <= m_BottomRight.Y())
+		}
 
 		T m_TopLeft;
 		T m_BottomRight;

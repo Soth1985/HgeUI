@@ -40,8 +40,13 @@ namespace Thor
                 m_Mouse.m_Buttons[(int32_t)btn].m_TimeSinceStateChange = 0.0;
             }            
         }
+
+		ThVec2f& GetMousePos()
+		{
+			return m_Mouse.m_Pos;
+		}
         
-        ThVec2f& GetMousePos()
+        const ThVec2f& GetMousePos()const
         {
             return m_Mouse.m_Pos;
         }

@@ -24,6 +24,11 @@ namespace Thor
 
 		}
 
+		uint32_t ToArgb()const
+		{
+			return (uint32_t(m_A) << 24) + (uint32_t(m_R) << 16) + (uint32_t(m_G) << 8) + uint32_t(m_B);
+		}
+
 		uint8_t m_R;
 		uint8_t m_G;
 		uint8_t m_B;

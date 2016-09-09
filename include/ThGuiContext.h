@@ -24,6 +24,10 @@ namespace Thor
         float GetDeltaTime()const;
         void Update();
         void Render();
+		ThGuiElementPtr GetHotElement();
+		void SetHotElement(ThGuiElementPtr elem);
+		ThGuiElementPtr GetActiveElement();
+		void SetActiveElement(ThGuiElementPtr elem);
 	protected:
         virtual void UpdateInputImpl() = 0;
         virtual void RenderImpl() = 0;
@@ -31,6 +35,10 @@ namespace Thor
 		ThInput m_Input;
 		ThRectf m_DrawArea;
 		ThGuiElementPtr m_Root;
+		ThGuiElementPtr m_HotElement;
+		ThGuiElementPtr m_LastHotElement;
+		ThGuiElementPtr m_ActiveElement;
+		ThGuiElementPtr m_LastActiveElement;
 		ThElementID m_LastElementID;
 		ThCommandBuffer m_RenderBuf;
         float m_DeltaTime;

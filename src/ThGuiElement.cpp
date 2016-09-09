@@ -10,9 +10,11 @@ ThGuiElement::ThGuiElement(ThGuiContext* context)
     :
 m_Parent(nullptr),
 m_Context(context),
-m_LayoutRect(ThDim2(ThDim(0.0, 0), ThDim(0.0, 0)), ThDim2(ThDim(1.0, 0), ThDim(1.0, 0))),
+m_LayoutRect(Util::MakeDimRect(0.0, 0, 0.0, 0, 1.0, 0, 1.0, 0)),
 m_Color(128, 128, 128, 255),
-m_Texture(0)
+m_Texture(0),
+m_Layer(0),
+m_BorderWidth(0)
 {
     m_ID = m_Context->GenElementID();
 }
@@ -28,7 +30,14 @@ void ThGuiElement::Layout(const ThRectf& parentArea)
     ThDim2 relPos = GetPosition();
     ThDim2 relSize = GetSize();
     ThVec2f absPos = Util::GetAbsoluteDimension(relPos, parentSize);
-    ThVec2f absSize = Util::GetAbsoluteDimension(relPos, parentSize);
+    ThVec2f absSize = Util::GetAbsoluteDimension(relSize, parentSize);
+
+	if (absSize.X() < 0.0)
+		absSize.X() = 0.0;
+
+	if (absSize.Y() < 0.0)
+		absSize.Y() = 0.0;
+
     m_RealRect.TopLeft() = absPos;
     m_RealRect.BottomRight() = absPos + absSize;
     
@@ -46,6 +55,14 @@ void ThGuiElement::ProcessInput()
     {
         return m_Children[i]->ProcessInput();
     }
+
+	if (m_Context->GetActiveElement() == nullptr)
+	{
+		if (m_RealRect.IsInside(m_Context->GetInput().GetMousePos()))
+		{
+			m_Context->SetActiveElement(This());
+		}
+	}
 }
 
 void ThGuiElement::Render(ThCommandBuffer& cmd, uint16_t depth)
@@ -56,20 +73,19 @@ void ThGuiElement::Render(ThCommandBuffer& cmd, uint16_t depth)
     }
     
     ThLayer layer(m_Layer, depth);
-    cmd.AddQuad(m_RealRect, m_Texture, layer, m_Color);
+
+	if (m_Color.m_A > 0)
+		cmd.AddQuad(m_RealRect, m_Texture, layer, m_Color);
     
-    if (m_BorderWidth > 0)
+    if (m_BorderWidth > 0 && m_BorderColor.m_A > 0)
     {
-        ThVec2f size = m_RealRect.Size();
-        ThVec2f topLeft = m_RealRect.TopLeft();
-		ThVec2f topRight = topLeft + ThVec2f(size.X(), 0.0);
-        ThVec2f bottomRight = topRight - ThVec2f(0.0, size.Y());
-        ThVec2f bottomLeft = bottomRight - ThVec2f(size.X(), 0.0);
-        
-        cmd.AddLine(topLeft, topRight, m_BorderWidth, layer, m_BorderColor);
-        cmd.AddLine(topRight, bottomRight, m_BorderWidth, layer, m_BorderColor);
-        cmd.AddLine(bottomRight, bottomLeft, m_BorderWidth, layer, m_BorderColor);
-        cmd.AddLine(bottomLeft, topLeft, m_BorderWidth, layer, m_BorderColor);
+		ThVec2f rectPoints[4];
+		Util::DecomposeRect(m_RealRect, rectPoints);
+                
+        cmd.AddLine(rectPoints[0], rectPoints[1], m_BorderWidth, layer, m_BorderColor);
+        cmd.AddLine(rectPoints[1], rectPoints[2], m_BorderWidth, layer, m_BorderColor);
+        cmd.AddLine(rectPoints[2], rectPoints[3], m_BorderWidth, layer, m_BorderColor);
+        cmd.AddLine(rectPoints[3], rectPoints[0], m_BorderWidth, layer, m_BorderColor);
     }
     
     for (size_t i = 0; i < m_Children.size(); ++i)
@@ -274,4 +290,24 @@ ThTexHandle ThGuiElement::GetTexture()const
 void ThGuiElement::SetTexture(ThTexHandle texture)
 {
     m_Texture = texture;
+}
+
+const ThColor& ThGuiElement::GetBorderColor()const
+{
+	return m_BorderColor;
+}
+
+void ThGuiElement::SetBorderColor(const ThColor& color)
+{
+	m_BorderColor = color;
+}
+
+uint16_t ThGuiElement::GetLayer()const
+{
+	return m_Layer;
+}
+
+void ThGuiElement::SetLayer(uint16_t layer)
+{
+	m_Layer = layer;
 }

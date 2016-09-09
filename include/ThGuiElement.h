@@ -45,6 +45,10 @@ namespace Thor
         void SetColor(ThColor& color);
         ThTexHandle GetTexture()const;
         void SetTexture(ThTexHandle texture);
+		const ThColor& GetBorderColor()const;
+		void SetBorderColor(const ThColor& color);
+		uint16_t GetLayer()const;
+		void SetLayer(uint16_t layer);
         
         typedef ThDelegate<ThGuiElement*, float, float> OnMouseMoveDel;
         typedef ThDelegate<ThGuiElement*, float, float> OnMouseEnterDel;
