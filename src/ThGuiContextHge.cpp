@@ -119,7 +119,7 @@ void ThGuiContextHge::UpdateInputImpl()
             else
             {
                 m_Input.SetMouseButtonState(mouseKeys[i].from, false, (int32_t)InputButtonState::Down);
-                m_Input.SetMouseButtonState(mouseKeys[i].from, true, (int32_t)InputButtonState::JustPressed);
+                m_Input.SetMouseButtonState(mouseKeys[i].from, true, (int32_t)InputButtonState::JustReleased);
             }
         }
     }
