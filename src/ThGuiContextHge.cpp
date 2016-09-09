@@ -186,6 +186,10 @@ void ThGuiContextHge::RenderImpl()
 			}
 			case RenderShape::Text:
 			{
+				hgeFont* font = (hgeFont*)cmd.m_Text.m_Font;
+				font->SetColor(cmd.m_Color.ToArgb());
+				font->SetScale(cmd.m_Text.m_Scale);
+				font->Render(cmd.m_Text.m_Pos.X(), cmd.m_Text.m_Pos.Y(), HGETEXT_LEFT, cmd.m_Text.m_Str);
 				break;
 			}
 		}

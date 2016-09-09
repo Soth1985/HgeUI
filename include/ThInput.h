@@ -27,7 +27,7 @@ namespace Thor
 	{
         bool GetMouseButtonState(MouseButton btn, uint32_t state)
         {
-            return m_Mouse.m_Buttons[(int32_t)btn].m_State.CheckFlag(state);
+            return m_Mouse.m_Buttons[(int32_t)btn].m_State.CheckFlags(state);
         }
         
         void SetMouseButtonState(MouseButton btn, bool enable, uint32_t state)

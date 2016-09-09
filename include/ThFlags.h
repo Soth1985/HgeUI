@@ -30,10 +30,15 @@ namespace Thor
                 m_BitField &= ~flag;
         }
         
-        bool	CheckFlag(T flag)const
+        bool	CheckOneFlag(T flag)const
         {
             return ( m_BitField & flag ) == flag;
         }
+
+		bool	CheckFlags(T flags)const
+		{
+			return (m_BitField & flags) != 0;
+		}
         
         void	Reset()
         {

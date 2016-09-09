@@ -24,12 +24,18 @@ namespace Thor
 	class ThGuiContext;
 	typedef std::shared_ptr<ThGuiContext> ThGuiContextPtr;
 	typedef std::weak_ptr<ThGuiContext> ThGuiContextWeakPtr;
+
 	class ThGuiElement;
 	typedef std::shared_ptr<ThGuiElement> ThGuiElementPtr;
 	typedef std::weak_ptr<ThGuiElement> ThGuiElementWeakPtr;
+
 	class ThGuiButton;
-	class ThGuiImage;
-	class ThGuiPanel;
+	typedef std::shared_ptr<ThGuiButton> ThGuiButtonPtr;
+	typedef std::weak_ptr<ThGuiButton> ThGuiButtonWeakPtr;
+
+	class ThGuiText;
+	typedef std::shared_ptr<ThGuiText> ThGuiTextPtr;
+	typedef std::weak_ptr<ThGuiText> ThGuiTextWeakPtr;
 
 	enum class Anchor : int32_t
 	{		
@@ -63,7 +69,6 @@ namespace Thor
 	enum class WidgetType : int32_t
 	{
 		Button,
-		Image,
 		Panel,
         Text
 	};
@@ -71,9 +76,9 @@ namespace Thor
 	enum class WidgetState : int32_t
 	{
 		LayoutRequired = 1 << 0,
-        ProcessInput = 1 << 1,
-        RenderWidget = 1 << 2,
-        Clipped = 1 << 3
+        Inactive = 1 << 1,
+        Clipped = 1 << 2,
+		Invisible = 1 << 3
 	};
     
     enum class RenderShape : int32_t

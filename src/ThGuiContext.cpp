@@ -49,7 +49,7 @@ float ThGuiContext::GetDeltaTime()const
 void ThGuiContext::Update()
 {
     UpdateInputImpl();
-    m_Root->LayoutRecursive(m_DrawArea);
+    m_Root->LayoutElementRecursive(m_DrawArea);
 	m_ActiveElement = nullptr;
 	m_HotElement = nullptr;
     m_Root->ProcessInputRecursive();
@@ -80,4 +80,14 @@ ThGuiElementPtr ThGuiContext::GetActiveElement()
 void ThGuiContext::SetActiveElement(ThGuiElementPtr elem)
 {
 	m_ActiveElement = elem;
+}
+
+ThFontHandle ThGuiContext::GetDefaultFont()const
+{
+	return m_DefaultFont;
+}
+
+void ThGuiContext::SetDefaultFont(ThFontHandle font)
+{
+	m_DefaultFont = font;
 }

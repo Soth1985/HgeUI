@@ -17,7 +17,7 @@ namespace Thor
         const std::string& GetText()const;
         void SetText(const std::string& text);
     protected:
-        virtual void RenderElement(ThCommandBuffer& cmd, uint16_t depth);
+        virtual void RenderElement(ThCommandBuffer& cmd, uint16_t depth)override;
         
         ThFontHandle m_Font;
         ThColor m_TextColor;

@@ -7,7 +7,7 @@
 
 namespace Thor
 {
-	class ThGuiContext : std::enable_shared_from_this<ThGuiContext>
+	class ThGuiContext : public std::enable_shared_from_this<ThGuiContext>
 	{
 	public:
         ThGuiContext();
@@ -31,6 +31,8 @@ namespace Thor
 		void SetHotElement(ThGuiElementPtr elem);
 		ThGuiElementPtr GetActiveElement();
 		void SetActiveElement(ThGuiElementPtr elem);
+		ThFontHandle GetDefaultFont()const;
+		void SetDefaultFont(ThFontHandle font);
 	protected:
         virtual void UpdateInputImpl() = 0;
         virtual void RenderImpl() = 0;
@@ -44,6 +46,7 @@ namespace Thor
 		ThGuiElementPtr m_LastActiveElement;
 		ThElementID m_LastElementID;
 		ThCommandBuffer m_RenderBuf;
+		ThFontHandle m_DefaultFont;
         float m_DeltaTime;
 	};
 }

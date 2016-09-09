@@ -24,9 +24,13 @@ ThGuiElement::~ThGuiElement()
     
 }
 
-void ThGuiElement::LayoutRecursive(const ThRectf& parentArea)
+void ThGuiElement::LayoutElementRecursive(const ThRectf& parentArea)
 {
     SetState(false, (int32_t)WidgetState::Clipped);
+
+	if (IsStateSet((int32_t)WidgetState::Invisible))
+		return;
+
     ThVec2f parentSize = parentArea.Size();
     ThDim2 relPos = GetPosition();
     ThDim2 relSize = GetSize();
@@ -42,26 +46,39 @@ void ThGuiElement::LayoutRecursive(const ThRectf& parentArea)
     m_RealRect.TopLeft() = absPos;
     m_RealRect.BottomRight() = absPos + absSize;
     
-    if ((m_RealRect.Area() == 0.0) || !parentArea.Intersects(m_RealRect))
-        SetState(true, (int32_t)WidgetState::Clipped);
-    
+	if ((m_RealRect.Area() == 0.0) || !parentArea.Intersects(m_RealRect))
+	{
+		SetState(true, (int32_t)WidgetState::Clipped);
+		return;
+	}    
+	
     //TODO anchor solver
-    
+	LayoutElement(parentArea);
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
-        return m_Children[i]->LayoutRecursive(m_RealRect);
+        return m_Children[i]->LayoutElementRecursive(m_RealRect);
     }
+}
+
+void ThGuiElement::LayoutElement(const ThRectf& parentArea)
+{
+
 }
 
 void ThGuiElement::ProcessInputRecursive()
 {
-    if (IsStateSet((int32_t)WidgetState::Clipped))
+	int32_t visibilityFlags = (int32_t)WidgetState::Clipped | (int32_t)WidgetState::Invisible;
+    
+	if (IsStateSet(visibilityFlags))
         return;
     
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
         return m_Children[i]->ProcessInputRecursive();
     }
+
+	if (IsStateSet((int32_t)WidgetState::Inactive))
+		return;
 
 	if (m_Context->GetActiveElement() == nullptr)
 	{
@@ -83,20 +100,31 @@ void ThGuiElement::RenderElement(ThCommandBuffer& cmd, uint16_t depth)
     {
         ThVec2f rectPoints[4];
         Util::DecomposeRect(m_RealRect, rectPoints);
+		
+		static ThVec2f offsets[4] = 
+		{
+			{0.0, m_BorderWidth},
+			//{m_BorderWidth, 0.0},
+			//{0.0, -m_BorderWidth},
+			{ 0.0, 0.0 },
+			{ 0.0, 0.0 },
+			{m_BorderWidth, 0.0}
+		};
         
-        cmd.AddLine(rectPoints[0], rectPoints[1], m_BorderWidth, layer, m_BorderColor);
-        cmd.AddLine(rectPoints[1], rectPoints[2], m_BorderWidth, layer, m_BorderColor);
-        cmd.AddLine(rectPoints[2], rectPoints[3], m_BorderWidth, layer, m_BorderColor);
-        cmd.AddLine(rectPoints[3], rectPoints[0], m_BorderWidth, layer, m_BorderColor);
+        cmd.AddLine(rectPoints[0] + offsets[0], rectPoints[1] + offsets[0], m_BorderWidth, layer, m_BorderColor);
+        cmd.AddLine(rectPoints[1] + offsets[1], rectPoints[2] + offsets[1], m_BorderWidth, layer, m_BorderColor);
+        cmd.AddLine(rectPoints[2] + offsets[2], rectPoints[3] + offsets[2], m_BorderWidth, layer, m_BorderColor);
+        cmd.AddLine(rectPoints[3] + offsets[3], rectPoints[0] + offsets[3], m_BorderWidth, layer, m_BorderColor);
     }
 }
 
 void ThGuiElement::RenderRecursive(ThCommandBuffer& cmd, uint16_t depth)
 {
-    if (IsStateSet((int32_t)WidgetState::Clipped))
+	int32_t visibilityFlags = (int32_t)WidgetState::Clipped | (int32_t)WidgetState::Invisible;
+    if (IsStateSet(visibilityFlags))
         return;
     
-    if (GetNumChildren() > 0)
+    //if (GetNumChildren() > 0)
     {
         cmd.PushState(m_RealRect);
     }
@@ -108,7 +136,7 @@ void ThGuiElement::RenderRecursive(ThCommandBuffer& cmd, uint16_t depth)
         return m_Children[i]->RenderRecursive(cmd, depth + 1);
     }
     
-    if (GetNumChildren() > 0)
+    //if (GetNumChildren() > 0)
     {
         cmd.PopState();
     }
@@ -123,7 +151,7 @@ bool ThGuiElement::PushChild(ThGuiElementPtr child)
 {
     int32_t index = GetChildIndex(child->GetElementID());
     
-    if (index < 0)
+    if (index >= 0)
         return false;
     
     m_Children.push_back(child);
@@ -245,17 +273,17 @@ void ThGuiElement::SetName(const std::string& name)
     m_Name = name;
 }
 
-bool ThGuiElement::IsStateSet(uint32_t state)
+bool ThGuiElement::IsStateSet(int32_t state)
 {
-    return m_State.CheckFlag(state);
+    return m_State.CheckFlags(state);
 }
 
-void ThGuiElement::SetState(bool enable, uint32_t state)
+void ThGuiElement::SetState(bool enable, int32_t state)
 {
     m_State.SetFlag(enable, state);
 }
 
-void ThGuiElement::SetStateRecursive(bool enable, uint32_t state)
+void ThGuiElement::SetStateRecursive(bool enable, int32_t state)
 {
     m_State.SetFlag(enable, state);
     
@@ -315,6 +343,16 @@ const ThColor& ThGuiElement::GetBorderColor()const
 void ThGuiElement::SetBorderColor(const ThColor& color)
 {
 	m_BorderColor = color;
+}
+
+float ThGuiElement::GetBorderWidth()const
+{
+	return m_BorderWidth;
+}
+
+void ThGuiElement::SetBorderWidth(float width)
+{
+	m_BorderWidth = width;
 }
 
 uint16_t ThGuiElement::GetLayer()const

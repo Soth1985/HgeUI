@@ -9,7 +9,6 @@ using namespace Thor;
 
 bool FrameFunc();
 bool RenderFunc();
-bool FocusLostFunc();
 
 class ThSampleApp
 {
@@ -29,7 +28,6 @@ public:
 		m_Hge->System_SetState(HGE_LOGFILE, "hge_gui.log");
 		m_Hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 		m_Hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
-		m_Hge->System_SetState(HGE_FOCUSLOSTFUNC, FocusLostFunc);
 		m_Hge->System_SetState(HGE_TITLE, "Sample app");
 		m_Hge->System_SetState(HGE_FPS, 100);
 		m_Hge->System_SetState(HGE_WINDOWED, true);
@@ -43,8 +41,19 @@ public:
 			m_GuiCtx->Init();
 			ThRectf drawArea(ThVec2f(0.0, 0.0), ThVec2f(screenWidth, screenHeight));
 			m_GuiCtx->SetDrawArea(drawArea);
+			ThFontHandle font = m_GuiCtx->CreateTextFont("font1.fnt");
+			m_GuiCtx->SetDefaultFont(font);
 
-			m_Font = m_GuiCtx->CreateTextFont("font1.fnt");
+			ThGuiTextPtr text = std::make_shared<ThGuiText>(m_GuiCtx.get());
+			text->SetText("Some text ghjdghjfghjfhjfghxfdg");
+			text->SetPosition(Util::MakeDim2(0.5, 0, 0.5, 0));
+			text->SetSize(Util::MakeDim2(0.25, 0, 0.25, 0));
+			text->SetColor(ThColor(255, 0, 0, 255));
+			text->SetBorderColor(ThColor(0, 0, 0, 255));
+			text->SetBorderWidth(1.0);
+
+			m_GuiCtx->GetRootElement()->PushChild(text);
+			
             ThTexHandle cursorTex = m_GuiCtx->CreateTexture("cursor.png");
             m_Cursor = new hgeSprite(cursorTex, 0, 0, 32, 32);
 			m_Hge->System_Start();			
@@ -101,7 +110,6 @@ private:
 
 	HGE* m_Hge;
     hgeSprite* m_Cursor;
-    ThFontHandle m_Font;
 	ThGuiContextPtr m_GuiCtx;
 };
 
@@ -115,11 +123,6 @@ bool FrameFunc()
 bool RenderFunc()
 {
 	return g_App.Render();
-}
-
-bool FocusLostFunc()
-{
-	return false;
 }
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)

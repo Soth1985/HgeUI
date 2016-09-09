@@ -14,7 +14,7 @@ namespace Thor
     public:
         ThGuiElement(ThGuiContext* context);
         virtual ~ThGuiElement();
-        virtual void LayoutRecursive(const ThRectf& parentArea);
+        virtual void LayoutElementRecursive(const ThRectf& parentArea);
         virtual void ProcessInputRecursive();
         virtual WidgetType GetType()const;
         
@@ -34,9 +34,9 @@ namespace Thor
         ThElementID GetElementID()const;
         const std::string& GetName()const;
         void SetName(const std::string& name);
-        bool IsStateSet(uint32_t state);
-        void SetState(bool enable, uint32_t state);
-        void SetStateRecursive(bool enable, uint32_t state);
+        bool IsStateSet(int32_t state);
+        void SetState(bool enable, int32_t state);
+        void SetStateRecursive(bool enable, int32_t state);
         const ThDim2& GetPosition()const;
         void SetPosition(const ThDim2& pos);
         ThDim2 GetSize()const;
@@ -47,6 +47,8 @@ namespace Thor
         void SetTexture(ThTexHandle texture);
 		const ThColor& GetBorderColor()const;
 		void SetBorderColor(const ThColor& color);
+		float GetBorderWidth()const;
+		void SetBorderWidth(float width);
 		uint16_t GetLayer()const;
 		void SetLayer(uint16_t layer);
         
@@ -63,6 +65,7 @@ namespace Thor
         OnMouseButtonReleasedDel md_OnMouseButtonReleased;
     protected:
         virtual void RenderElement(ThCommandBuffer& cmd, uint16_t depth);
+		virtual void LayoutElement(const ThRectf& parentArea);
         
         ThGuiElement* m_Parent;
         ThGuiContext* m_Context;

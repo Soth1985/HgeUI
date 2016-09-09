@@ -16,6 +16,7 @@
     <ClCompile Include="..\src\ThGuiContext.cpp" />
     <ClCompile Include="..\src\ThGuiContextHge.cpp" />
     <ClCompile Include="..\src\ThGuiElement.cpp" />
+    <ClCompile Include="..\src\ThGuiText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\ThColor.h" />
@@ -28,8 +29,8 @@
     <ClInclude Include="..\include\ThGuiContext.h" />
     <ClInclude Include="..\include\ThGuiElement.h" />
     <ClInclude Include="..\include\ThGuiForward.h" />
-    <ClInclude Include="..\include\ThGuiImage.h" />
     <ClInclude Include="..\include\ThGuiContextHge.h" />
+    <ClInclude Include="..\include\ThGuiText.h" />
     <ClInclude Include="..\include\ThGuiUtil.h" />
     <ClInclude Include="..\include\ThInput.h" />
     <ClInclude Include="..\include\ThLayer.h" />

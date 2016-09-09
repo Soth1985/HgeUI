@@ -1,15 +1,15 @@
 #include "ThGuiText.h"
+#include "ThGuiContext.h"
 
 using namespace Thor;
 
 ThGuiText::ThGuiText(ThGuiContext* context)
     :
 ThGuiElement(context),
-m_Font(0),
 m_TextColor(0, 0, 0, 255),
-m_TextScale(0)
+m_TextScale(1.0)
 {
-    
+	m_Font = context->GetDefaultFont();
 }
 
 ThFontHandle ThGuiText::GetFont()const
@@ -55,6 +55,10 @@ void ThGuiText::SetText(const std::string& text)
 void ThGuiText::RenderElement(ThCommandBuffer& cmd, uint16_t depth)
 {
     ThGuiElement::RenderElement(cmd, depth);
-    ThLayer layer(m_Layer, depth);
-    cmd.AddText(m_Text.c_str(), m_RealRect.TopLeft(), m_Font, m_TextScale);
+
+	if (m_Font && !m_Text.empty())
+	{
+		ThLayer layer(m_Layer, depth);
+		cmd.AddText(m_Text.c_str(), m_RealRect.TopLeft(), m_Font, m_TextScale, layer, m_TextColor);
+	}    
 }

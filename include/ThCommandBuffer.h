@@ -66,7 +66,7 @@ namespace Thor
         void PopState();
         void AddQuad(const ThRectf& shape, ThTexHandle tex, ThLayer layer, const ThColor& color);
         void AddLine(const ThVec2f& from, const ThVec2f& to, float width, ThLayer layer, const ThColor& color);
-        void AddText(const char* str, const ThVec2f& pos, ThFontHandle font, float scale);
+        void AddText(const char* str, const ThVec2f& pos, ThFontHandle font, float scale, ThLayer layer, const ThColor& color);
         void SortByLayer();
         void Reset();
         

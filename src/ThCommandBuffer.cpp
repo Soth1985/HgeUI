@@ -46,13 +46,17 @@ void ThCommandBuffer::AddLine(const ThVec2f& from, const ThVec2f& to, float widt
     m_Shapes.push_back(cmd);
 }
 
-void ThCommandBuffer::AddText(const char* str, const ThVec2f& pos, ThFontHandle font, float scale)
+void ThCommandBuffer::AddText(const char* str, const ThVec2f& pos, ThFontHandle font, float scale, ThLayer layer, const ThColor& color)
 {
     ThDrawShapeCmd cmd;
     cmd.m_Text.m_Font = font;
     cmd.m_Text.m_Pos = pos;
     cmd.m_Text.m_Scale = scale;
     cmd.m_Text.m_Str = str;
+	cmd.m_ShapeType = RenderShape::Text;
+	cmd.m_Color = color;
+	cmd.m_Layer = layer;
+	cmd.m_StateIndex = m_StateStack.top();
     m_Shapes.push_back(cmd);
 }
 
