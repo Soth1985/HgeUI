@@ -87,4 +87,18 @@ namespace Thor
         Quad,
         Text
     };
+
+	enum class TextHorAlignment : int32_t
+	{
+		Left,
+		Center,
+		Right
+	};
+
+	enum class TextVertAlignment : int32_t
+	{
+		Top,
+		Center,
+		Bottom
+	};
 }

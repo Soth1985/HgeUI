@@ -23,6 +23,11 @@ namespace Thor
 			return ThDimRect(MakeDim2(tlXR, tlXA, tlYR, tlYA), MakeDim2(brXR, brXA, brYR, brYA));
 		}
 
+		static ThDim2 Fill()
+		{
+			return MakeDim2(1.0, 0, 1.0, 0);
+		}
+
 		static void DecomposeRect(const ThRectf& rect, ThVec2f points[4])
 		{
 			ThVec2f size = rect.Size();

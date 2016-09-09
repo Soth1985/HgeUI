@@ -45,12 +45,14 @@ public:
 			m_GuiCtx->SetDefaultFont(font);
 
 			ThGuiTextPtr text = std::make_shared<ThGuiText>(m_GuiCtx.get());
-			text->SetText("Some text ghjdghjfghjfhjfghxfdg");
+			text->SetText("Some text");
 			text->SetPosition(Util::MakeDim2(0.5, 0, 0.5, 0));
 			text->SetSize(Util::MakeDim2(0.25, 0, 0.25, 0));
 			text->SetColor(ThColor(255, 0, 0, 255));
 			text->SetBorderColor(ThColor(0, 0, 0, 255));
 			text->SetBorderWidth(1.0);
+			text->SetVertTextAlignment(TextVertAlignment::Center);
+			text->SetHorTextAlignment(TextHorAlignment::Center);
 
 			m_GuiCtx->GetRootElement()->PushChild(text);
 			
@@ -90,7 +92,6 @@ public:
 			m_Cursor->Render(mousePos.X(), mousePos.Y());
 		}
         
-		//((hgeFont*)m_Font)->printf(5, 5, HGETEXT_LEFT, "x=%.3f, y=%.3f\n", mousePos.X(), mousePos.Y());
 		m_Hge->Gfx_EndScene();
 
 		return false;

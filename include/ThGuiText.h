@@ -16,6 +16,10 @@ namespace Thor
         void SetTextScale(float scale);
         const std::string& GetText()const;
         void SetText(const std::string& text);
+		TextVertAlignment GetVertTextAlignment()const;
+		void SetVertTextAlignment(TextVertAlignment align);
+		TextHorAlignment GetHorTextAlignment()const;
+		void SetHorTextAlignment(TextHorAlignment align);
     protected:
         virtual void RenderElement(ThCommandBuffer& cmd, uint16_t depth)override;
         
@@ -23,5 +27,7 @@ namespace Thor
         ThColor m_TextColor;
         float m_TextScale;
         std::string m_Text;
+		TextVertAlignment m_VertTextAlignment;
+		TextHorAlignment m_HorTextAlignment;
     };
 }
