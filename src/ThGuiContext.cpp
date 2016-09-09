@@ -49,16 +49,16 @@ float ThGuiContext::GetDeltaTime()const
 void ThGuiContext::Update()
 {
     UpdateInputImpl();
-    m_Root->Layout(m_DrawArea);
+    m_Root->LayoutRecursive(m_DrawArea);
 	m_ActiveElement = nullptr;
 	m_HotElement = nullptr;
-    m_Root->ProcessInput();
+    m_Root->ProcessInputRecursive();
 }
 
 void ThGuiContext::Render()
 {
 	m_RenderBuf.Reset();
-    m_Root->Render(m_RenderBuf, 0);
+    m_Root->RenderRecursive(m_RenderBuf, 0);
     RenderImpl();
 }
 

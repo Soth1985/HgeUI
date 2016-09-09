@@ -60,10 +60,10 @@ namespace Thor
 
 		bool IsInside(const Vec2& point)const
 		{
-			return	(point.X() >= m_TopLeft.X()) && 
+			return	(point.X() >= m_TopLeft.X()) &&
 					(point.X() <= m_BottomRight.X()) &&
 					(point.Y() >= m_TopLeft.Y()) &&
-					(point.Y() <= m_BottomRight.Y())
+					(point.Y() <= m_BottomRight.Y());
 		}
         
         ValueType Area()const
@@ -76,12 +76,12 @@ namespace Thor
         {
             Vec2 size = Size();
             Vec2 rhsSize = rhs.Size();
-            ThRange<T> rngX(m_TopLeft.X(), m_TopLeft.X() + size.X());
-            ThRange<T> rngY(m_TopLeft.Y(), m_TopLeft.Y() + size.Y());
-            ThRange<T> rhsRngX(rhs.m_TopLeft.X(), rhs.m_TopLeft.X() + rhsSize.X());
-            ThRange<T> rhsRngX(rhs.m_TopLeft.Y(), rhs.m_TopLeft.Y() + rhsSize.Y());
+            ThRange<ValueType> rngX(m_TopLeft.X(), m_TopLeft.X() + size.X());
+            ThRange<ValueType> rngY(m_TopLeft.Y(), m_TopLeft.Y() + size.Y());
+            ThRange<ValueType> rhsRngX(rhs.m_TopLeft.X(), rhs.m_TopLeft.X() + rhsSize.X());
+            ThRange<ValueType> rhsRngY(rhs.m_TopLeft.Y(), rhs.m_TopLeft.Y() + rhsSize.Y());
             
-            return rngX.Overlaps(rhsRngX) && rngY.Overlaps(rhsRngY);
+            return rngX.Overlap(rhsRngX) && rngY.Overlap(rhsRngY);
         }
 
 		T m_TopLeft;

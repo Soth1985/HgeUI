@@ -26,7 +26,7 @@ ThGuiElement::~ThGuiElement()
 
 void ThGuiElement::LayoutRecursive(const ThRectf& parentArea)
 {
-    SetState(false, WidgetState::Clipped);
+    SetState(false, (int32_t)WidgetState::Clipped);
     ThVec2f parentSize = parentArea.Size();
     ThDim2 relPos = GetPosition();
     ThDim2 relSize = GetSize();
@@ -43,7 +43,7 @@ void ThGuiElement::LayoutRecursive(const ThRectf& parentArea)
     m_RealRect.BottomRight() = absPos + absSize;
     
     if ((m_RealRect.Area() == 0.0) || !parentArea.Intersects(m_RealRect))
-        SetState(true, WidgetState::Clipped);
+        SetState(true, (int32_t)WidgetState::Clipped);
     
     //TODO anchor solver
     
@@ -55,7 +55,7 @@ void ThGuiElement::LayoutRecursive(const ThRectf& parentArea)
 
 void ThGuiElement::ProcessInputRecursive()
 {
-    if (GetState(WidgetState::Clipped))
+    if (IsStateSet((int32_t)WidgetState::Clipped))
         return;
     
     for (size_t i = 0; i < m_Children.size(); ++i)
@@ -93,7 +93,7 @@ void ThGuiElement::RenderElement(ThCommandBuffer& cmd, uint16_t depth)
 
 void ThGuiElement::RenderRecursive(ThCommandBuffer& cmd, uint16_t depth)
 {
-    if (GetState(WidgetState::Clipped))
+    if (IsStateSet((int32_t)WidgetState::Clipped))
         return;
     
     if (GetNumChildren() > 0)

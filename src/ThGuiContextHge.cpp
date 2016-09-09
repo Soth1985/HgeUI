@@ -37,14 +37,14 @@ void ThGuiContextHge::Log(const char* format, ...)
 	va_end(args);
 }
 
-ThFontHandle ThGuiContextHge::CreateFont(const std::string& name)
+ThFontHandle ThGuiContextHge::CreateTextFont(const std::string& name)
 {
     auto found = m_Fonts.find(name);
     
     if (found != m_Fonts.end())
-        return found->second;
+        return (ThFontHandle)found->second;
     
-    hgeFont* result = new hgeFont(name);
+    hgeFont* result = new hgeFont(name.c_str());
     m_Fonts[name] = result;
     return (ThFontHandle)result;
 }
@@ -52,7 +52,7 @@ ThFontHandle ThGuiContextHge::CreateFont(const std::string& name)
 float ThGuiContextHge::GetFontHeight(ThFontHandle font)
 {
     hgeFont* fontHge = (hgeFont*)font;
-    return fontHge->GetHeight()
+	return fontHge->GetHeight();
 }
 
 float ThGuiContextHge::GetStringWidth(ThFontHandle font, const std::string& text)

@@ -2,4 +2,4 @@
 
 #include "ThGuiContext.h"
 #include "ThGuiButton.h"
-#include "ThGuiImage.h"
+#include "ThGuiText.h"

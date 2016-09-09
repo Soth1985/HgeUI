@@ -4,6 +4,8 @@
 #include "hge.h"
 #include <unordered_map>
 
+class hgeFont;
+
 namespace Thor
 {
 	class ThGuiContextHge : public ThGuiContext
@@ -14,7 +16,7 @@ namespace Thor
         virtual bool Init()override;
         virtual void Shutdown()override;
         virtual void Log(const char* format, ...)override;
-        virtual ThFontHandle CreateFont(const std::string& name)override;
+        virtual ThFontHandle CreateTextFont(const std::string& name)override;
         virtual float GetFontHeight(ThFontHandle font)override;
         virtual float GetStringWidth(ThFontHandle font, const std::string& text)override;
 	protected:

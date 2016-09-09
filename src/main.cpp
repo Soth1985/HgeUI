@@ -9,6 +9,7 @@ using namespace Thor;
 
 bool FrameFunc();
 bool RenderFunc();
+bool FocusLostFunc();
 
 class ThSampleApp
 {
@@ -28,6 +29,7 @@ public:
 		m_Hge->System_SetState(HGE_LOGFILE, "hge_gui.log");
 		m_Hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 		m_Hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
+		m_Hge->System_SetState(HGE_FOCUSLOSTFUNC, FocusLostFunc);
 		m_Hge->System_SetState(HGE_TITLE, "Sample app");
 		m_Hge->System_SetState(HGE_FPS, 100);
 		m_Hge->System_SetState(HGE_WINDOWED, true);
@@ -42,7 +44,7 @@ public:
 			ThRectf drawArea(ThVec2f(0.0, 0.0), ThVec2f(screenWidth, screenHeight));
 			m_GuiCtx->SetDrawArea(drawArea);
 
-			m_Font = m_GuiCtx->CreateFont("font1.fnt");
+			m_Font = m_GuiCtx->CreateTextFont("font1.fnt");
             ThTexHandle cursorTex = m_GuiCtx->CreateTexture("cursor.png");
             m_Cursor = new hgeSprite(cursorTex, 0, 0, 32, 32);
 			m_Hge->System_Start();			
@@ -72,10 +74,14 @@ public:
 
 		if (m_GuiCtx)
 			m_GuiCtx->Render();
-
-		fnt->printf(5, 5, HGETEXT_LEFT, "dt:%.3f\nFPS:%d (constant)", m_Hge->Timer_GetDelta(), m_Hge->Timer_GetFPS());
-        ThVec2f mousePos = m_GuiCtx->GetInput().GetMousePos();
-        m_Cursor->Render(mousePos.X(), mousePos.Y());
+		
+		if (m_Hge->Input_IsMouseOver())
+		{
+			ThVec2f mousePos = m_GuiCtx->GetInput().GetMousePos();
+			m_Cursor->Render(mousePos.X(), mousePos.Y());
+		}
+        
+		//((hgeFont*)m_Font)->printf(5, 5, HGETEXT_LEFT, "x=%.3f, y=%.3f\n", mousePos.X(), mousePos.Y());
 		m_Hge->Gfx_EndScene();
 
 		return false;
@@ -109,6 +115,11 @@ bool FrameFunc()
 bool RenderFunc()
 {
 	return g_App.Render();
+}
+
+bool FocusLostFunc()
+{
+	return false;
 }
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)

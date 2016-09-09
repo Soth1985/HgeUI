@@ -7,7 +7,7 @@
 
 namespace Thor
 {
-    class ThGuiElement : std::enable_shared_from_this<ThGuiElement>
+    class ThGuiElement : public std::enable_shared_from_this<ThGuiElement>
     {
 	private:
 		typedef std::vector<ThGuiElementPtr> ChildrenContainer;
