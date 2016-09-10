@@ -33,6 +33,9 @@ namespace Thor
 		void SetActiveElement(ThGuiElementPtr elem);
 		ThFontHandle GetDefaultFont()const;
 		void SetDefaultFont(ThFontHandle font);
+        float GetPixelScale()const;
+        float GetInvPixelScale()const;
+        void SetPixelScale(float scale);
 	protected:
         virtual void UpdateInputImpl() = 0;
         virtual void RenderImpl() = 0;
@@ -48,5 +51,7 @@ namespace Thor
 		ThCommandBuffer m_RenderBuf;
 		ThFontHandle m_DefaultFont;
         float m_DeltaTime;
+        float m_PixelScale;
+        float m_InvPixelScale;
 	};
 }

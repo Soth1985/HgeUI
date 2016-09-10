@@ -24,6 +24,8 @@ namespace Thor
         ThGuiElementPtr GetChildRecursive(ThElementID child);
         size_t GetNumChildren()const;
         ThGuiElementPtr GetChildByIndex(size_t index);
+        ThGuiElementPtr GetChildByName(const std::string& name);
+        ThGuiElementPtr GetChildByNameRecursive(const std::string& name);
         void GetChildrenByName(const std::string& name, ChildrenContainer& children);
         void GetChildrenByNameRecursive(const std::string& name, ChildrenContainer& children);
         bool SwapChilds(ThElementID c1, ThElementID c2);

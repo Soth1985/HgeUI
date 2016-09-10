@@ -198,6 +198,34 @@ ThGuiElementPtr ThGuiElement::GetChildByIndex(size_t index)
     return m_Children[index];
 }
 
+ThGuiElementPtr ThGuiElement::GetChildByName(const std::string& name)
+{
+    for (size_t i = 0; i < m_Children.size(); ++i)
+    {
+        if (m_Children[i]->GetName() == name)
+            return m_Children[i];
+    }
+    
+    return nullptr;
+}
+
+ThGuiElementPtr ThGuiElement::GetChildByNameRecursive(const std::string& name)
+{
+    ThGuiElementPtr result = GetChildByName(name);
+    
+    if (result)
+        return result;
+    
+    for (size_t i = 0; i < m_Children.size(); ++i)
+    {
+        result = m_Children[i]->GetChildByNameRecursive(name);
+        if (result)
+            return result;
+    }
+    
+    return nullptr;
+}
+
 void ThGuiElement::GetChildrenByName(const std::string& name, ChildrenContainer& children)
 {
     for (size_t i = 0; i < m_Children.size(); ++i)

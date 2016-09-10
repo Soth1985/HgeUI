@@ -101,4 +101,12 @@ namespace Thor
 		Center,
 		Bottom
 	};
+    
+    enum class WidgetViewState : int32_t
+    {
+        Default,
+        MouseOver,
+        Pressed,
+        NumStates
+    };
 }

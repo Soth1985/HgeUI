@@ -6,7 +6,9 @@ using namespace Thor;
 ThGuiContext::ThGuiContext()
     :
 m_LastElementID(0),
-m_DeltaTime(0.0)
+m_DeltaTime(0.0),
+m_PixelScale(1.0),
+m_InvPixelScale(1.0)
 {
 	m_Root = std::make_shared<ThGuiElement>(this);
 }
@@ -90,4 +92,20 @@ ThFontHandle ThGuiContext::GetDefaultFont()const
 void ThGuiContext::SetDefaultFont(ThFontHandle font)
 {
 	m_DefaultFont = font;
+}
+
+float ThGuiContext::GetPixelScale()const
+{
+    return m_PixelScale;
+}
+
+float ThGuiContext::GetInvPixelScale()const
+{
+    return m_InvPixelScale;
+}
+
+void ThGuiContext::SetPixelScale(float scale)
+{
+    m_PixelScale = scale;
+    m_InvPixelScale = 1.0 / scale;
 }

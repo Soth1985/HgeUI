@@ -34,4 +34,6 @@ namespace Thor
 		uint8_t m_B;
 		uint8_t m_A;
 	};
+    
+    static const ThColor EmptyColor;
 }
