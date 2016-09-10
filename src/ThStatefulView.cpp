@@ -5,15 +5,12 @@ using namespace Thor;
 ThViewStateData::ThViewStateData()
     :
 m_Texture(0),
-m_BorderWidth(0.0),
-m_Owner(nullptr)
+m_BorderWidth(0.0)
 {
     
 }
 
 ThStatefulView::ThStatefulView()
-    :
-m_CurState(WidgetState::NumStates)
 {
     
 }
@@ -22,31 +19,20 @@ void ThStatefulView::SetStateData(WidgetViewState state, const ThViewStateData& 
 {
     if (state == WidgetViewState::NumStates)
     {
-        for (int32_t i = 0; i < WidgetViewState::NumStates; ++i)
+        for (int32_t i = 0; i < (int32_t)WidgetViewState::NumStates; ++i)
         {
             m_States[i] = data;
         }
     }
     else
     {
-        m_States[state] = data;
+        m_States[(int32_t)state] = data;
     }
     
-    if (m_CurState != WidgetState::NumStates)
-        md_OnStateDataChanged.Invoke();
-}
-
-void ThStatefulView::SwitchState(WidgetViewState targetState)
-{
-    m_CurState = targetState;
+    md_OnStateDataChanged.Invoke();
 }
 
 const ThViewStateData& ThStatefulView::GetStateData(WidgetViewState state)const
 {
-    return m_States[state];
-}
-
-const ThViewStateData& ThStatefulView::GetCurrentStateData()const
-{
-    return m_States[m_CurState];
+    return m_States[(int32_t)state];
 }

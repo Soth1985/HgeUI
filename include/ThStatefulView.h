@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ThGuiForward.h"
+#include "ThDelegate.h"
 
 namespace Thor
 {
@@ -24,6 +25,6 @@ namespace Thor
         
         OnStateDataChangedDel md_OnStateDataChanged;
     private:
-        ThViewStateData m_States[WidgetViewState::NumStates];
+        ThViewStateData m_States[(int32_t)WidgetViewState::NumStates];
     };
 }

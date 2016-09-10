@@ -1,37 +1,42 @@
 #include "ThGuiButton.h"
 #include "ThGuiText.h"
 
-using namespace Thor
+using namespace Thor;
 
 ThGuiButton::ThGuiButton(ThGuiContext* context)
     :
+ThGuiElement(context),
 m_CurState(WidgetViewState::NumStates)
 {
-    m_Caption = std::make_shared<ThGuiButton>(context);
-    m_Caption->SetVertTextAlignment(VertTextAlignment::Center);
-    m_Caption->SetHorTextAlignment(HorTextAlignment::Center);
+    m_Caption = std::make_shared<ThGuiText>(context);
+    m_Caption->SetVertTextAlignment(TextVertAlignment::Center);
+    m_Caption->SetHorTextAlignment(TextHorAlignment::Center);
     PushChild(m_Caption);
     
-    mdc_OnStateDataChanged = m_States.md_OnStateDataChanged.Connect([this]void()
-                                                                    {
-                                                                        this->ApplyState(m_CurState);
-                                                                    });
-    mdc_OnMouseEnter = md_OnMouseEnter.Connect([this]void()
-                                               {
-                                                   this->ApplyState(WidgetViewState::MouseOver);
-                                               });
-    mdc_OnMouseLeave = md_OnMouseLeave.Connect([this]void()
-                                               {
-                                                   this->ApplyState(WidgetViewState::Default);
-                                               });
-    mdc_OnMouseButtonPressed = md_OnMouseButtonPressed.Connect([this]void()
-                                                      {
-                                                          this->ApplyState(WidgetViewState::Pressed);
-                                                      });
-    mdc_OnMouseButtonReleased= md_OnMouseButtonReleased.Connect([this]void()
-                                                       {
-                                                           this->ApplyState(WidgetViewState::Default);
-                                                       });
+    mdc_OnStateDataChanged = m_States.md_OnStateDataChanged.Connect([this]()
+	{
+		this->ApplyState(m_CurState);
+	});
+
+    mdc_OnMouseEnter = md_OnMouseEnter.Connect([this](ThGuiElement*, float, float)
+	{
+		this->ApplyState(WidgetViewState::MouseOver);
+	});
+
+    mdc_OnMouseLeave = md_OnMouseLeave.Connect([this](ThGuiElement*, float, float)
+	{
+		this->ApplyState(WidgetViewState::Default);
+	});
+
+    mdc_OnMouseButtonPressed = md_OnMouseButtonPressed.Connect([this](ThGuiElement*, MouseButton)
+	{
+		this->ApplyState(WidgetViewState::Pressed);
+	});
+
+    mdc_OnMouseButtonReleased= md_OnMouseButtonReleased.Connect([this](ThGuiElement*, MouseButton)
+	{
+		this->ApplyState(WidgetViewState::Default);
+	});
 }
 
 void ThGuiButton::ApplyState(WidgetViewState state)

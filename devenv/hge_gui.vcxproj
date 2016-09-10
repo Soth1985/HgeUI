@@ -13,10 +13,12 @@
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\ThCommandBuffer.cpp" />
+    <ClCompile Include="..\src\ThGuiButton.cpp" />
     <ClCompile Include="..\src\ThGuiContext.cpp" />
     <ClCompile Include="..\src\ThGuiContextHge.cpp" />
     <ClCompile Include="..\src\ThGuiElement.cpp" />
     <ClCompile Include="..\src\ThGuiText.cpp" />
+    <ClCompile Include="..\src\ThStatefulView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\ThColor.h" />
@@ -36,6 +38,7 @@
     <ClInclude Include="..\include\ThLayer.h" />
     <ClInclude Include="..\include\ThRange.h" />
     <ClInclude Include="..\include\ThRect.h" />
+    <ClInclude Include="..\include\ThStatefulView.h" />
     <ClInclude Include="..\include\ThVec2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

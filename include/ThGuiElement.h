@@ -44,9 +44,9 @@ namespace Thor
         ThDim2 GetSize()const;
         void SetSize(const ThDim2& pos);
         const ThColor& GetColor()const;
-        void SetColor(ThColor& color);
+        void SetColor(const ThColor& color);
         ThTexHandle GetTexture()const;
-        void SetTexture(ThTexHandle texture);
+        void SetTexture(ThTexHandle texture, const ThColor& overrideColor = WhiteColor);
 		const ThColor& GetBorderColor()const;
 		void SetBorderColor(const ThColor& color);
 		float GetBorderWidth()const;

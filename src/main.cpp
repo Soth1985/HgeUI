@@ -39,11 +39,11 @@ public:
 		{
 			m_GuiCtx = std::make_shared<ThGuiContextHge>(m_Hge);
 			m_GuiCtx->Init();
-			ThRectf drawArea = Util::MakeRect(0.0, 0.0, screenWidth/2, screenHeight/2);
+			ThRectf drawArea = Util::MakeRect(0.0, 0.0, screenWidth, screenHeight);
 			m_GuiCtx->SetDrawArea(drawArea);
 			ThFontHandle font = m_GuiCtx->CreateTextFont("font1.fnt");
 			m_GuiCtx->SetDefaultFont(font);
-			
+			CreatePanels();
             ThTexHandle cursorTex = m_GuiCtx->CreateTexture("cursor.png");
             m_Cursor = new hgeSprite(cursorTex, 0, 0, 32, 32);
 			m_Hge->System_Start();			
@@ -71,21 +71,21 @@ public:
     void CreatePanels()
     {
         ThGuiElementPtr panel1 = std::make_shared<ThGuiElement>(m_GuiCtx.get());
-        panel1->SetColor(ThColor(64, 64, 64, 255));
+        panel1->SetColor(ThColor(128, 128, 128, 255));
         panel1->SetPosition(Util::MakeDim2(0.0, 0, 0.0, 0));
-        panel1->SetSize(Util::MakeDim2(0.5, 0, 0.5, 0));
+        panel1->SetSize(Util::MakeDim2(0.5, 0, 0.25, 0));
         
         ThGuiElementPtr panel2 = std::make_shared<ThGuiElement>(m_GuiCtx.get());
         panel2->SetColor(ThColor(128, 128, 128, 255));
         panel2->SetPosition(Util::MakeDim2(0.0, 0, 0.5, 0));
-        panel2->SetSize(Util::MakeDim2(0.5, 0, 0.5, 0));
+        panel2->SetSize(Util::MakeDim2(0.5, 0, 0.25, 0));
         
         m_GuiCtx->GetRootElement()->PushChild(panel1);
         m_GuiCtx->GetRootElement()->PushChild(panel2);
         
-        FillPanel(panel1, panel2, mdc_OnBtnPress1, mdc_OnMouseEnterImg1, "btnImg", "btnPressedImg", "img1", "img2");
+        FillPanel(panel1, panel2, mdc_OnBtnPress1, mdc_OnMouseEnterImg1, "btn_off.png", "btn_press.png", "zazaka.png", "bg.png");
         
-        FillPanel(panel2, panel1, mdc_OnBtnPress2, mdc_OnMouseEnterImg2, "btnImg", "btnPressedImg", "img1", "img2");
+        FillPanel(panel2, panel1, mdc_OnBtnPress2, mdc_OnMouseEnterImg2, "btn_off.png", "btn_press.png", "objects.png", "particles.png");
     }
     
     void FillPanel(ThGuiElementPtr panel, ThGuiElementPtr otherPanel, ThDelegateConnection& btnDel, ThDelegateConnection& imgDel, const std::string& btnImg, const std::string& btnPressedImg, const std::string& img1, const std::string& img2)
@@ -97,33 +97,41 @@ public:
         const float oneThird = 1.0 / 3.0;
         
         ThGuiButtonPtr button = std::make_shared<ThGuiButton>(m_GuiCtx.get());
-        button->SetSize(Util::MakeDim2(oneThird, 0, 1.0, 0));
+        button->SetSize(Util::MakeDim2(0, 120, 0, 35));
+		button->GetCaption()->SetTextScale(0.75);
+		button->GetCaption()->SetText("Press me!");
         ThViewStateData buttonView;
         buttonView.m_Texture = btnTex;
-        if (!btnTex)
-        {
-            buttonView.m_Color = ThColor(255, 0, 0, 255);
-            buttonView.m_BorderWidth = 1.0;
-            buttonView.m_BorderColor = ThColor(0, 0, 0, 255);
-        }
-        button->GetStates().SetStateData(NumStates, buttonView);
+
+		if (!btnTex)
+		{
+			buttonView.m_Color = ThColor(255, 0, 0, 255);
+			buttonView.m_BorderWidth = 1.0;
+			buttonView.m_BorderColor = ThColor(0, 0, 0, 255);
+		}
+		else
+			buttonView.m_Color = WhiteColor;
+
+        button->GetStates().SetStateData(WidgetViewState::NumStates, buttonView);
         buttonView.m_Texture = btnPressedTex;
-        button->GetStates().SetStateData(Pressed, buttonView);
-        btnDel = button->md_OnMousePressed.Connect([=]void(){
-            bool visible = otherPanel->IsStateSet(Visible);
-            otherPanel->SetState(!visible, Visible);
+        button->GetStates().SetStateData(WidgetViewState::Pressed, buttonView);
+        btnDel = button->md_OnMouseButtonPressed.Connect([=](ThGuiElement* sender, MouseButton button)
+		{
+            bool invisible = otherPanel->IsStateSet((int32_t)WidgetState::Invisible);
+            otherPanel->SetState(!invisible, (int32_t)WidgetState::Invisible);
         });
         
         ThGuiElementPtr image1 = std::make_shared<ThGuiElement>(m_GuiCtx.get());
         image1->SetPosition(Util::MakeDim2(oneThird, 0, 0.0, 0));
         image1->SetSize(Util::MakeDim2(oneThird, 0, 1.0, 0));
+		
         if (img1Tex)
             image1->SetTexture(img1Tex);
         else
             image1->SetColor(ThColor(0, 255, 0, 255));
         
         ThGuiElementPtr image2 = std::make_shared<ThGuiElement>(m_GuiCtx.get());
-        image2->SetState(false, Visible);
+        image2->SetState(true, (int32_t)WidgetState::Invisible);
         image2->SetPosition(Util::MakeDim2(2.0 * oneThird, 0, 0.0, 0));
         image2->SetSize(Util::MakeDim2(oneThird, 0, 1.0, 0));
         if (img2Tex)
@@ -131,12 +139,14 @@ public:
         else
             image2->SetColor(ThColor(0, 0, 255, 255));
         
-        image1->md_OnMouseEnter.Connect([=]void(){
-            image2->SetState(true, Visible);
+		imgDel = image1->md_OnMouseEnter.Connect([=](ThGuiElement* sender, float x, float y)
+		{
+            image2->SetState(false, (int32_t)WidgetState::Invisible);
         });
         
-        image1->md_OnMouseLeave.Connect([=]void(){
-            image2->SetState(false, Visible);
+        image1->md_OnMouseLeave.Connect([=](ThGuiElement* sender, float x, float y)
+		{
+            image2->SetState(true, (int32_t)WidgetState::Invisible);
         });
         
         panel->PushChild(button);

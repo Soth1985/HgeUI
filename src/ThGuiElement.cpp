@@ -11,10 +11,10 @@ ThGuiElement::ThGuiElement(ThGuiContext* context)
 m_Parent(nullptr),
 m_Context(context),
 m_LayoutRect(Util::MakeDimRect(0.0, 0, 0.0, 0, 1.0, 0, 1.0, 0)),
-m_Color(128, 128, 128, 255),
+//m_Color(128, 128, 128, 255),
 m_Texture(0),
 m_Layer(0),
-m_BorderWidth(0)
+m_BorderWidth(0.0)
 {
     m_ID = m_Context->GenElementID();
 }
@@ -34,7 +34,7 @@ void ThGuiElement::LayoutElementRecursive(const ThRectf& parentArea)
     ThVec2f parentSize = parentArea.Size();
     ThDim2 relPos = GetPosition();
     ThDim2 relSize = GetSize();
-    ThVec2f absPos = Util::GetAbsoluteDimension(relPos, parentSize);
+    ThVec2f absPos = parentArea.TopLeft() + Util::GetAbsoluteDimension(relPos, parentSize);
     ThVec2f absSize = Util::GetAbsoluteDimension(relSize, parentSize);
 
 	if (absSize.X() < 0.0)
@@ -56,7 +56,7 @@ void ThGuiElement::LayoutElementRecursive(const ThRectf& parentArea)
 	LayoutElement(parentArea);
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
-        return m_Children[i]->LayoutElementRecursive(m_RealRect);
+        m_Children[i]->LayoutElementRecursive(m_RealRect);
     }
 }
 
@@ -74,7 +74,7 @@ void ThGuiElement::ProcessInputRecursive()
     
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
-        return m_Children[i]->ProcessInputRecursive();
+        m_Children[i]->ProcessInputRecursive();
     }
 
 	if (IsStateSet((int32_t)WidgetState::Inactive))
@@ -101,14 +101,13 @@ void ThGuiElement::RenderElement(ThCommandBuffer& cmd, uint16_t depth)
         ThVec2f rectPoints[4];
         Util::DecomposeRect(m_RealRect, rectPoints);
 		
-		static ThVec2f offsets[4] = 
+		float borderWidth = m_BorderWidth * m_Context->GetInvPixelScale();
+		ThVec2f offsets[4] = 
 		{
-			{0.0, m_BorderWidth * 2},
-			//{m_BorderWidth, 0.0},
-			//{0.0, -m_BorderWidth},
-			{ 0.0, 0.0 },
-			{ 0.0, 0.0 },
-			{m_BorderWidth * 2, 0.0}
+			{0.0, borderWidth},
+			{0.0, 0.0},
+			{0.0, 0.0},
+			{borderWidth, 0.0}
 		};
         
         cmd.AddLine(rectPoints[0] + offsets[0], rectPoints[1] + offsets[0], m_BorderWidth, layer, m_BorderColor);
@@ -133,7 +132,7 @@ void ThGuiElement::RenderRecursive(ThCommandBuffer& cmd, uint16_t depth)
     
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
-        return m_Children[i]->RenderRecursive(cmd, depth + 1);
+        m_Children[i]->RenderRecursive(cmd, depth + 1);
     }
     
     //if (GetNumChildren() > 0)
@@ -348,7 +347,7 @@ const ThColor& ThGuiElement::GetColor()const
     return m_Color;
 }
 
-void ThGuiElement::SetColor(ThColor& color)
+void ThGuiElement::SetColor(const ThColor& color)
 {
     m_Color = color;
 }
@@ -358,9 +357,11 @@ ThTexHandle ThGuiElement::GetTexture()const
     return m_Texture;
 }
 
-void ThGuiElement::SetTexture(ThTexHandle texture)
+void ThGuiElement::SetTexture(ThTexHandle texture, const ThColor& overrideColor)
 {
     m_Texture = texture;
+
+	SetColor(overrideColor);
 }
 
 const ThColor& ThGuiElement::GetBorderColor()const

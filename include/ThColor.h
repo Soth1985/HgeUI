@@ -36,4 +36,5 @@ namespace Thor
 	};
     
     static const ThColor EmptyColor;
+	static const ThColor WhiteColor(255, 255, 255, 255);
 }
