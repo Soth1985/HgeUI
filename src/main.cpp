@@ -39,7 +39,7 @@ public:
 		{
 			m_GuiCtx = std::make_shared<ThGuiContextHge>(m_Hge);
 			m_GuiCtx->Init();
-			ThRectf drawArea(ThVec2f(0.0, 0.0), ThVec2f(screenWidth, screenHeight));
+			ThRectf drawArea = Util::MakeRect(0.0, 0.0, screenWidth/2, screenHeight/2);
 			m_GuiCtx->SetDrawArea(drawArea);
 			ThFontHandle font = m_GuiCtx->CreateTextFont("font1.fnt");
 			m_GuiCtx->SetDefaultFont(font);
@@ -53,6 +53,7 @@ public:
 			text->SetBorderWidth(1.0);
 			text->SetVertTextAlignment(TextVertAlignment::Center);
 			text->SetHorTextAlignment(TextHorAlignment::Center);
+			text->SetTextScale(0.5);
 
 			m_GuiCtx->GetRootElement()->PushChild(text);
 			

@@ -103,12 +103,12 @@ void ThGuiElement::RenderElement(ThCommandBuffer& cmd, uint16_t depth)
 		
 		static ThVec2f offsets[4] = 
 		{
-			{0.0, m_BorderWidth},
+			{0.0, m_BorderWidth * 2},
 			//{m_BorderWidth, 0.0},
 			//{0.0, -m_BorderWidth},
 			{ 0.0, 0.0 },
 			{ 0.0, 0.0 },
-			{m_BorderWidth, 0.0}
+			{m_BorderWidth * 2, 0.0}
 		};
         
         cmd.AddLine(rectPoints[0] + offsets[0], rectPoints[1] + offsets[0], m_BorderWidth, layer, m_BorderColor);

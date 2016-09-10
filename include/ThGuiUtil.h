@@ -23,6 +23,11 @@ namespace Thor
 			return ThDimRect(MakeDim2(tlXR, tlXA, tlYR, tlYA), MakeDim2(brXR, brXA, brYR, brYA));
 		}
 
+		static ThRectf MakeRect(float tlX, float tlY, float brX, float brY)
+		{
+			return ThRectf(ThVec2f(tlX, tlY), ThVec2f(brX, brY));
+		}
+
 		static ThDim2 Fill()
 		{
 			return MakeDim2(1.0, 0, 1.0, 0);

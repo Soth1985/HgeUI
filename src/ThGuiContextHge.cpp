@@ -190,6 +190,7 @@ void ThGuiContextHge::RenderImpl()
 				font->SetColor(cmd.m_Color.ToArgb());
 				font->SetScale(cmd.m_Text.m_Scale);
 				font->Render(cmd.m_Text.m_Pos.X(), cmd.m_Text.m_Pos.Y(), HGETEXT_LEFT, cmd.m_Text.m_Str);
+				font->SetScale(1.0);
 				break;
 			}
 		}
