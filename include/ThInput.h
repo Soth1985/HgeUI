@@ -25,7 +25,7 @@ namespace Thor
 
 	struct ThInput
 	{
-        bool GetMouseButtonState(MouseButton btn, uint32_t state)
+        bool GetMouseButtonState(MouseButton btn, uint32_t state)const
         {
             return m_Mouse.m_Buttons[(int32_t)btn].m_State.CheckFlags(state);
         }

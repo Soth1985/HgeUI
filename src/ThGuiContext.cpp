@@ -56,27 +56,22 @@ void ThGuiContext::Update()
     m_Root->LayoutElementRecursive(m_DrawArea);
     //m_Root->ProcessInputRecursive();
     
-    bool hasPresedButtons = false;
-    bool hasReleasedButtons = false;
-    
-    for (uint32_t btn = 0; btn < MouseButton::NumButtons; ++btn)
+    if (m_ActiveElement)
     {
-        hasPressedButtons |= m_Input.GetMouseButtonState(btn, (int32_t)InputButtonState::JustPressed);
-        hasReleasedButtons |= m_Input.GetMouseButtonState(btn, (int32_t)InputButtonState::JustReleased);
+		for (int32_t btn = 0; btn < (int32_t)MouseButton::NumButtons; ++btn)
+		{
+			if (m_Input.GetMouseButtonState((MouseButton)btn, (int32_t)InputButtonState::JustPressed))
+				m_ActiveElement->md_OnMouseButtonPressed.Invoke(m_ActiveElement.get(), (MouseButton)btn);					
+		}
     }
-    
-    if (m_ActiveElement != nullptr)
-    {
-        if (hasPressedButtons)
-        {
-            m_ActiveElement->md_OnMouseButtonPressed.Invoke(m_ActiveElement.get(), m_Input.m_Mouse);
-        }
-        
-        if (hasReleasedButtons)
-        {
-            m_ActiveElement->md_OnMouseButtonRelease.Invoke(m_ActiveElement.get(), m_Input.m_Mouse);
-        }
-    }
+	else if (m_LastActiveElement)
+	{
+		for (int32_t btn = 0; btn < (int32_t)MouseButton::NumButtons; ++btn)
+		{
+			if (m_Input.GetMouseButtonState((MouseButton)btn, (int32_t)InputButtonState::JustReleased))
+				m_LastActiveElement->md_OnMouseButtonReleased.Invoke(m_ActiveElement.get(), (MouseButton)btn);
+		}
+	}
     
     if (m_HotElement != m_LastHotElement)
     {
@@ -86,7 +81,7 @@ void ThGuiContext::Update()
             m_HotElement->md_OnMouseEnter.Invoke(m_HotElement.get(), mousePos.X(), mousePos.Y());
         
         if (m_LastHotElement)
-            m_LastHotElement->md_OnMouseLeave.Invoke(m_HotElement.get(), mousePos.X(), mousePos.Y());
+            m_LastHotElement->md_OnMouseLeave.Invoke(m_LastHotElement.get(), mousePos.X(), mousePos.Y());
             
     }
     else if (m_HotElement)

@@ -57,8 +57,8 @@ namespace Thor
         typedef ThDelegate<ThGuiElement*, float, float> OnMouseMoveDel;
         typedef ThDelegate<ThGuiElement*, float, float> OnMouseEnterDel;
         typedef ThDelegate<ThGuiElement*, float, float> OnMouseLeaveDel;
-        typedef ThDelegate<ThGuiElement*, const ThMouse&> OnMouseButtonPressedDel;
-        typedef ThDelegate<ThGuiElement*, const ThMouse&> OnMouseButtonReleasedDel;
+        typedef ThDelegate<ThGuiElement*, MouseButton> OnMouseButtonPressedDel;
+        typedef ThDelegate<ThGuiElement*, MouseButton> OnMouseButtonReleasedDel;
         
         OnMouseMoveDel md_OnMouseMove;
         OnMouseEnterDel md_OnMouseEnter;

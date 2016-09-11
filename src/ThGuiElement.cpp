@@ -81,8 +81,8 @@ void ThGuiElement::ProcessInput()
     bool isMouseInside = m_RealRect.IsInside(m_Context->GetInput().GetMousePos());
     bool isMouseBtnPressed = false;
     
-    for (uint32_t btn = 0; btn < MouseButton::NumButtons; ++btn)
-        isMouseBtnPressed |= m_Context->GetInput().GetMouseButtonState(btn, (int32_t)InputButtonState::Down);
+    for (uint32_t btn = 0; btn < (uint32_t)MouseButton::NumButtons; ++btn)
+        isMouseBtnPressed |= m_Context->GetInput().GetMouseButtonState((MouseButton)btn, (int32_t)InputButtonState::Down);
 
     if (m_Context->GetHotElement() == nullptr)
     {

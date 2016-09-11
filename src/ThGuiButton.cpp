@@ -11,6 +11,7 @@ m_CurState(WidgetViewState::NumStates)
     m_Caption = std::make_shared<ThGuiText>(context);
     m_Caption->SetVertTextAlignment(TextVertAlignment::Center);
     m_Caption->SetHorTextAlignment(TextHorAlignment::Center);
+	m_Caption->SetState(true, (int32_t)WidgetState::Inactive);
     PushChild(m_Caption);
     
     mdc_OnStateDataChanged = m_States.md_OnStateDataChanged.Connect([this]()
@@ -28,14 +29,16 @@ m_CurState(WidgetViewState::NumStates)
 		this->ApplyState(WidgetViewState::Default);
 	});
 
-    mdc_OnMouseButtonPressed = md_OnMouseButtonPressed.Connect([this](ThGuiElement*, MouseButton)
+    mdc_OnMouseButtonPressed = md_OnMouseButtonPressed.Connect([this](ThGuiElement*, MouseButton btn)
 	{
-		this->ApplyState(WidgetViewState::Pressed);
+		if (btn == MouseButton::Left)
+			this->ApplyState(WidgetViewState::Pressed);
 	});
 
-    mdc_OnMouseButtonReleased= md_OnMouseButtonReleased.Connect([this](ThGuiElement*, MouseButton)
+    mdc_OnMouseButtonReleased = md_OnMouseButtonReleased.Connect([this](ThGuiElement*, MouseButton btn)
 	{
-		this->ApplyState(WidgetViewState::Default);
+		if (btn == MouseButton::Left)
+			this->ApplyState(WidgetViewState::Default);
 	});
 }
 
