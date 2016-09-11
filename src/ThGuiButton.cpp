@@ -41,7 +41,7 @@ m_CurState(WidgetViewState::NumStates)
 
 void ThGuiButton::ApplyState(WidgetViewState state)
 {
-    //if (state != m_CurState)
+    if (state != WidgetViewState::NumStates)
     {
         m_CurState = state;
         const ThViewStateData& data = m_States.GetStateData(state);

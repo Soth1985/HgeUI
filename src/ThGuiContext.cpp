@@ -50,11 +50,53 @@ float ThGuiContext::GetDeltaTime()const
 
 void ThGuiContext::Update()
 {
+    m_ActiveElement = nullptr;
+    m_HotElement = nullptr;
     UpdateInputImpl();
     m_Root->LayoutElementRecursive(m_DrawArea);
-	m_ActiveElement = nullptr;
-	m_HotElement = nullptr;
-    m_Root->ProcessInputRecursive();
+    //m_Root->ProcessInputRecursive();
+    
+    bool hasPresedButtons = false;
+    bool hasReleasedButtons = false;
+    
+    for (uint32_t btn = 0; btn < MouseButton::NumButtons; ++btn)
+    {
+        hasPressedButtons |= m_Input.GetMouseButtonState(btn, (int32_t)InputButtonState::JustPressed);
+        hasReleasedButtons |= m_Input.GetMouseButtonState(btn, (int32_t)InputButtonState::JustReleased);
+    }
+    
+    if (m_ActiveElement != nullptr)
+    {
+        if (hasPressedButtons)
+        {
+            m_ActiveElement->md_OnMouseButtonPressed.Invoke(m_ActiveElement.get(), m_Input.m_Mouse);
+        }
+        
+        if (hasReleasedButtons)
+        {
+            m_ActiveElement->md_OnMouseButtonRelease.Invoke(m_ActiveElement.get(), m_Input.m_Mouse);
+        }
+    }
+    
+    if (m_HotElement != m_LastHotElement)
+    {
+        ThVec2f mousePos = m_Input.GetMousePos();
+        
+        if (m_HotElement)
+            m_HotElement->md_OnMouseEnter.Invoke(m_HotElement.get(), mousePos.X(), mousePos.Y());
+        
+        if (m_LastHotElement)
+            m_LastHotElement->md_OnMouseLeave.Invoke(m_HotElement.get(), mousePos.X(), mousePos.Y());
+            
+    }
+    else if (m_HotElement)
+    {
+        ThVec2f mousePos = m_Input.GetMousePos();
+        m_HotElement->md_OnMouseMove.Invoke(m_HotElement.get(), mousePos.X(), mousePos.Y());
+    }
+    
+    m_LastHotElement = m_HotElement;
+    m_LastActiveElement = m_ActiveElement;
 }
 
 void ThGuiContext::Render()
@@ -71,7 +113,7 @@ ThGuiElementPtr ThGuiContext::GetHotElement()
 
 void ThGuiContext::SetHotElement(ThGuiElementPtr elem)
 {
-	m_HotElement = elem;
+    m_HotElement = elem;
 }
 
 ThGuiElementPtr ThGuiContext::GetActiveElement()
@@ -81,7 +123,8 @@ ThGuiElementPtr ThGuiContext::GetActiveElement()
 
 void ThGuiContext::SetActiveElement(ThGuiElementPtr elem)
 {
-	m_ActiveElement = elem;
+    if (m_HotElement == elem)
+        m_ActiveElement = elem;
 }
 
 ThFontHandle ThGuiContext::GetDefaultFont()const

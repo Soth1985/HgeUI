@@ -15,7 +15,6 @@ namespace Thor
         ThGuiElement(ThGuiContext* context);
         virtual ~ThGuiElement();
         virtual void LayoutElementRecursive(const ThRectf& parentArea);
-        virtual void ProcessInputRecursive();
         virtual WidgetType GetType()const;
         
         void RenderRecursive(ThCommandBuffer& cmd, uint16_t depth);
@@ -53,12 +52,13 @@ namespace Thor
 		void SetBorderWidth(float width);
 		uint16_t GetLayer()const;
 		void SetLayer(uint16_t layer);
+        void SetLayerRecursive(uint16_t layer);
         
         typedef ThDelegate<ThGuiElement*, float, float> OnMouseMoveDel;
         typedef ThDelegate<ThGuiElement*, float, float> OnMouseEnterDel;
         typedef ThDelegate<ThGuiElement*, float, float> OnMouseLeaveDel;
-        typedef ThDelegate<ThGuiElement*, MouseButton> OnMouseButtonPressedDel;
-        typedef ThDelegate<ThGuiElement*, MouseButton> OnMouseButtonReleasedDel;
+        typedef ThDelegate<ThGuiElement*, const ThMouse&> OnMouseButtonPressedDel;
+        typedef ThDelegate<ThGuiElement*, const ThMouse&> OnMouseButtonReleasedDel;
         
         OnMouseMoveDel md_OnMouseMove;
         OnMouseEnterDel md_OnMouseEnter;
@@ -66,6 +66,7 @@ namespace Thor
         OnMouseButtonPressedDel md_OnMouseButtonPressed;
         OnMouseButtonReleasedDel md_OnMouseButtonReleased;
     protected:
+        virtual void ProcessInput();
         virtual void RenderElement(ThCommandBuffer& cmd, uint16_t depth);
 		virtual void LayoutElement(const ThRectf& parentArea);
         

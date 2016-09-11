@@ -13,7 +13,7 @@ m_Context(context),
 m_LayoutRect(Util::MakeDimRect(0.0, 0, 0.0, 0, 1.0, 0, 1.0, 0)),
 //m_Color(128, 128, 128, 255),
 m_Texture(0),
-m_Layer(0),
+m_Layer((uint16_t)WidgetLayer::Normal),
 m_BorderWidth(0.0)
 {
     m_ID = m_Context->GenElementID();
@@ -58,6 +58,7 @@ void ThGuiElement::LayoutElementRecursive(const ThRectf& parentArea)
     {
         m_Children[i]->LayoutElementRecursive(m_RealRect);
     }
+    ProcessInput();
 }
 
 void ThGuiElement::LayoutElement(const ThRectf& parentArea)
@@ -65,24 +66,35 @@ void ThGuiElement::LayoutElement(const ThRectf& parentArea)
 
 }
 
-void ThGuiElement::ProcessInputRecursive()
+void ThGuiElement::ProcessInput()
 {
-	int32_t visibilityFlags = (int32_t)WidgetState::Clipped | (int32_t)WidgetState::Invisible;
+	int32_t inputFlags = (int32_t)WidgetState::Clipped | (int32_t)WidgetState::Invisible | (int32_t)WidgetState::Inactive;
     
-	if (IsStateSet(visibilityFlags))
+	if (IsStateSet(inputFlags))
         return;
     
-    for (size_t i = 0; i < m_Children.size(); ++i)
+    /*for (size_t i = 0; i < m_Children.size(); ++i)
     {
         m_Children[i]->ProcessInputRecursive();
+    }*/
+    
+    bool isMouseInside = m_RealRect.IsInside(m_Context->GetInput().GetMousePos());
+    bool isMouseBtnPressed = false;
+    
+    for (uint32_t btn = 0; btn < MouseButton::NumButtons; ++btn)
+        isMouseBtnPressed |= m_Context->GetInput().GetMouseButtonState(btn, (int32_t)InputButtonState::Down);
+
+    if (m_Context->GetHotElement() == nullptr)
+    {
+        if (isMouseInside)
+        {
+            m_Context->SetHotElement(This());
+        }
     }
-
-	if (IsStateSet((int32_t)WidgetState::Inactive))
-		return;
-
-	if (m_Context->GetActiveElement() == nullptr)
+    
+    if (m_Context->GetActiveElement() == nullptr)
 	{
-		if (m_RealRect.IsInside(m_Context->GetInput().GetMousePos()))
+		if (isMouseInside && isMouseBtnPressed)
 		{
 			m_Context->SetActiveElement(This());
 		}
@@ -392,4 +404,13 @@ uint16_t ThGuiElement::GetLayer()const
 void ThGuiElement::SetLayer(uint16_t layer)
 {
 	m_Layer = layer;
+}
+
+void ThGuiElement::SetLayerRecursive(uint16_t layer)
+{
+    SetLayer(layer);
+    for (size_t i = 0; i < m_Children.size(); ++i)
+    {
+        m_Children[i]->SetLayerRecursive(layer);
+    }
 }

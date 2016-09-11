@@ -109,4 +109,11 @@ namespace Thor
         Pressed,
         NumStates
     };
+    
+    enum class WidgetLayer : uint16_t
+    {
+        Background,
+        Normal,
+        Overlay
+    };
 }
