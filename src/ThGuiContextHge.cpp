@@ -82,6 +82,14 @@ ThTexHandle ThGuiContextHge::CreateTexture(const std::string& name)
     }
 }
 
+ThVec2f ThGuiContextHge::GetTextureSize(ThTexHandle tex)override
+{
+    ThVec2f result;
+    result.X() = m_Hge->Texture_GetWidth(tex);
+    result.Y() = m_Hge->Texture_GetHeight(tex);
+    return result;
+}
+
 void ThGuiContextHge::UpdateInputImpl()
 {
     m_DeltaTime = m_Hge->Timer_GetDelta();

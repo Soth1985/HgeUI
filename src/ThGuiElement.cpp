@@ -14,7 +14,8 @@ m_LayoutRect(Util::MakeDimRect(0.0, 0, 0.0, 0, 1.0, 0, 1.0, 0)),
 //m_Color(128, 128, 128, 255),
 m_Texture(0),
 m_Layer((uint16_t)WidgetLayer::Normal),
-m_BorderWidth(0.0)
+m_BorderWidth(0.0),
+m_AspectRatioConstraint(-1.0)
 {
     m_ID = m_Context->GenElementID();
 }
@@ -36,6 +37,15 @@ void ThGuiElement::LayoutElementRecursive(const ThRectf& parentArea)
     ThDim2 relSize = GetSize();
     ThVec2f absPos = parentArea.TopLeft() + Util::GetAbsoluteDimension(relPos, parentSize);
     ThVec2f absSize = Util::GetAbsoluteDimension(relSize, parentSize);
+    
+    if (m_AspectRatioConstraint > 0.0)
+    {
+        if (absSize.X() == 0.0)
+            absSize.X() = absSize.Y() * m_AspectRatioConstraint;
+        
+        if (absSize.Y() == 0.0)
+            absSize.Y() = absSize.X() / m_AspectRatioConstraint;
+    }
 
 	if (absSize.X() < 0.0)
 		absSize.X() = 0.0;
@@ -135,7 +145,7 @@ void ThGuiElement::RenderRecursive(ThCommandBuffer& cmd, uint16_t depth)
     if (IsStateSet(visibilityFlags))
         return;
     
-    //if (GetNumChildren() > 0)
+    if (IsClipper())
     {
         cmd.PushState(m_RealRect);
     }
@@ -147,7 +157,7 @@ void ThGuiElement::RenderRecursive(ThCommandBuffer& cmd, uint16_t depth)
         m_Children[i]->RenderRecursive(cmd, depth + 1);
     }
     
-    //if (GetNumChildren() > 0)
+    if (IsClipper())
     {
         cmd.PopState();
     }
@@ -413,4 +423,24 @@ void ThGuiElement::SetLayerRecursive(uint16_t layer)
     {
         m_Children[i]->SetLayerRecursive(layer);
     }
+}
+
+const ThRectf& ThGuiElement::GetRealRect()const
+{
+    return m_RealRect;
+}
+
+float ThGuiElement::GetAspectRatioConstraint()const
+{
+    return m_AspectRatioConstraint;
+}
+
+void ThGuiElement::SetAspectRatioConstraint(float aspect)
+{
+    m_AspectRatioConstraint = aspect;
+}
+
+bool ThGuiElement::IsClipper()
+{
+    return GetNumChildren() > 0;
 }

@@ -27,7 +27,7 @@ namespace Thor
         ThGuiElementPtr GetChildByNameRecursive(const std::string& name);
         void GetChildrenByName(const std::string& name, ChildrenContainer& children);
         void GetChildrenByNameRecursive(const std::string& name, ChildrenContainer& children);
-        bool SwapChilds(ThElementID c1, ThElementID c2);
+        bool SwapChildren(ThElementID c1, ThElementID c2);
         int32_t GetChildIndex(ThElementID c)const;
         ThGuiElement* GetParent();
         void SetParent(ThGuiElement* element);
@@ -53,6 +53,9 @@ namespace Thor
 		uint16_t GetLayer()const;
 		void SetLayer(uint16_t layer);
         void SetLayerRecursive(uint16_t layer);
+        const ThRectf& GetRealRect()const;
+        float GetAspectRatioConstraint()const;
+        void SetAspectRatioConstraint(float aspect);
         
         typedef ThDelegate<ThGuiElement*, const ThVec2f&> OnMouseMoveDel;
         typedef ThDelegate<ThGuiElement*, const ThVec2f&> OnMouseEnterDel;
@@ -67,6 +70,7 @@ namespace Thor
         OnMouseButtonReleasedDel md_OnMouseButtonReleased;
     protected:
         virtual void ProcessInput();
+        virtual bool IsClipper();
         virtual void RenderElement(ThCommandBuffer& cmd, uint16_t depth);
 		virtual void LayoutElement(const ThRectf& parentArea);
         
@@ -83,5 +87,6 @@ namespace Thor
         ThColor m_BorderColor;
 		uint16_t m_Layer;
         float m_BorderWidth;
+        float m_AspectRatioConstraint;
     };
 }

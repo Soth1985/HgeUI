@@ -41,5 +41,34 @@ namespace Thor
 			points[2] = points[1] + ThVec2f(0.0, size.Y()); //br
 			points[3] = points[2] - ThVec2f(size.X(), 0.0); //bl
 		}
+        
+        static ThVec2f GetAnchorPoint(Anchor point, const ThRectf& rect)
+        {
+            ThVec2f points[4] = DecomposeRect(rect);
+            
+            switch (point)
+            {
+                case Anchor::TopLeft:
+                    return points[0];
+                case Anchor::Top:
+                    return (points[0] + points[1]) * 0.5;
+                case Anchor::TopRight:
+                    return points[1];
+                case Anchor::Left:
+                    return (points[1] + points[2]) * 0.5;
+                case Anchor::Center:
+                    return (points[1] + points[2]) * 0.5;
+                case Anchor::Right:
+                    return (points[0] + points[3]) * 0.5;
+                case Anchor::BottomLeft:
+                    return points[3];
+                case Anchor::Bottom:
+                    return (points[2] + points[3]) * 0.5;
+                case Anchor::BottomRight:
+                    return points[2];
+            }
+            
+            return ThVec2f();
+        }
     }
 }

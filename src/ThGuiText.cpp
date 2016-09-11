@@ -108,3 +108,11 @@ void ThGuiText::RenderElement(ThCommandBuffer& cmd, uint16_t depth)
 		cmd.AddText(m_Text.c_str(), textPos, m_Font, m_TextScale, layer, m_TextColor);
 	}    
 }
+
+void IsClipper()
+{
+    if (m_Font && !m_Text.empty())
+        return true;
+    
+    return ThGuiElement::IsClipper();
+}

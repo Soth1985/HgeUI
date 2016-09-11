@@ -13,6 +13,7 @@ namespace Thor
 	public:
         ThGuiContextHge(HGE* hge);
         virtual ThTexHandle CreateTexture(const std::string& name)override;
+        virtual ThVec2f GetTextureSize(ThTexHandle tex)override;
         virtual bool Init()override;
         virtual void Shutdown()override;
         virtual void Log(const char* format, ...)override;

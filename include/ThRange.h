@@ -20,30 +20,59 @@ public:
 
 	ThRange(T min, T max)
 	{
-		m_Min = (std::min)(min, max);
-		m_Max = (std::max)(min, max);
+        Set(min, max);
 	}
+    
+    void Set(T min, T max)
+    {
+        m_Min = (std::min)(min, max);
+        m_Max = (std::max)(min, max);
+    }
 
 	bool Overlap(const ThRange& r)const
 	{
-		return r.GetMin() <= m_Max && m_Min <= r.GetMax();
+		return r.Min() <= m_Max && m_Min <= r.Max();
 	}
 
 	void Join(const ThRange& r)
 	{
-		m_Min = m_Min < r.GetMin() ? m_Min : r.GetMin();
-		m_Max = m_Max > r.GetMax() ? m_Max : r.GetMax();
+		m_Min = m_Min < r.Min() ? m_Min : r.Min();
+		m_Max = m_Max > r.Max() ? m_Max : r.Max();
 	}
+    
+    void Intersect(const ThRange& r)
+    {
+        if (Overlap(r))
+        {
+            m_Min = r.Clamp(m_Min);
+            m_Max = r.Clamp(m_Max);
+        }
+        else
+        {
+            m_Min = 0.0;
+            m_Max = 0.0;
+        }
+    }
 
-	T GetMin()const
+	const T& Min()const
 	{
 		return m_Min;
 	}
 
-	T GetMax()const
+	const T& Max()const
 	{
 		return m_Max;
 	}
+    
+    T& Min()
+    {
+        return m_Min;
+    }
+    
+    T& Max()
+    {
+        return m_Max;
+    }
     
     T Clamp(T val)
     {

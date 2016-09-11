@@ -5,7 +5,7 @@ using namespace Thor;
 
 ThGuiContext::ThGuiContext()
     :
-m_LastElementID(0),
+m_LastElementID(1),
 m_DeltaTime(0.0),
 m_PixelScale(1.0),
 m_InvPixelScale(1.0)
@@ -54,7 +54,6 @@ void ThGuiContext::Update()
     m_HotElement = nullptr;
     UpdateInputImpl();
     m_Root->LayoutElementRecursive(m_DrawArea);
-    //m_Root->ProcessInputRecursive();
     
     if (m_ActiveElement)
     {
@@ -108,6 +107,9 @@ ThGuiElementPtr ThGuiContext::GetHotElement()
 
 void ThGuiContext::SetHotElement(ThGuiElementPtr elem)
 {
+    if (m_HotElement && m_HotElement->GetLayer() > elem->GetLayer())
+        return;
+    
     m_HotElement = elem;
 }
 
@@ -118,6 +120,9 @@ ThGuiElementPtr ThGuiContext::GetActiveElement()
 
 void ThGuiContext::SetActiveElement(ThGuiElementPtr elem)
 {
+    if (m_ActiveElement && m_ActiveElement->GetLayer() > elem->GetLayer())
+        return;
+    
     if (m_HotElement == elem)
         m_ActiveElement = elem;
 }

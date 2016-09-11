@@ -13,6 +13,7 @@ namespace Thor
         ThGuiContext();
 		virtual ~ThGuiContext();
 		virtual ThTexHandle CreateTexture(const std::string& name) = 0;
+        virtual ThVec2f GetTextureSize(ThTexHandle tex) = 0;
         virtual ThFontHandle CreateTextFont(const std::string& name) = 0;
         virtual float GetFontHeight(ThFontHandle font) = 0;
         virtual float GetStringWidth(ThFontHandle font, const std::string& text) = 0;
