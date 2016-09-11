@@ -102,16 +102,6 @@ public:
 		button->GetCaption()->SetText("Press me!");
         ThViewStateData buttonView;
         buttonView.m_Texture = btnTex;
-
-		if (!btnTex)
-		{
-			buttonView.m_Color = ThColor(255, 0, 0, 255);
-			buttonView.m_BorderWidth = 1.0;
-			buttonView.m_BorderColor = ThColor(0, 0, 0, 255);
-		}
-		else
-			buttonView.m_Color = WhiteColor;
-
         button->GetStates().SetStateData(WidgetViewState::NumStates, buttonView);
         buttonView.m_Texture = btnPressedTex;
         button->GetStates().SetStateData(WidgetViewState::Pressed, buttonView);

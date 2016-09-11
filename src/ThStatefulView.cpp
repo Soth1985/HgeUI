@@ -5,7 +5,8 @@ using namespace Thor;
 ThViewStateData::ThViewStateData()
     :
 m_Texture(0),
-m_BorderWidth(0.0)
+m_BorderWidth(0.0),
+m_Color(WhiteColor)
 {
     
 }
