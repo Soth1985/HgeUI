@@ -19,12 +19,12 @@ m_CurState(WidgetViewState::NumStates)
 		this->ApplyState(m_CurState);
 	});
 
-    mdc_OnMouseEnter = md_OnMouseEnter.Connect([this](ThGuiElement*, float, float)
+    mdc_OnMouseEnter = md_OnMouseEnter.Connect([this](ThGuiElement*, const ThVec2f&)
 	{
 		this->ApplyState(WidgetViewState::MouseOver);
 	});
 
-    mdc_OnMouseLeave = md_OnMouseLeave.Connect([this](ThGuiElement*, float, float)
+    mdc_OnMouseLeave = md_OnMouseLeave.Connect([this](ThGuiElement*, const ThVec2f&)
 	{
 		this->ApplyState(WidgetViewState::Default);
 	});

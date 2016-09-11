@@ -78,16 +78,16 @@ void ThGuiContext::Update()
         ThVec2f mousePos = m_Input.GetMousePos();
         
         if (m_HotElement)
-            m_HotElement->md_OnMouseEnter.Invoke(m_HotElement.get(), mousePos.X(), mousePos.Y());
+            m_HotElement->md_OnMouseEnter.Invoke(m_HotElement.get(), mousePos);
         
         if (m_LastHotElement)
-            m_LastHotElement->md_OnMouseLeave.Invoke(m_LastHotElement.get(), mousePos.X(), mousePos.Y());
+            m_LastHotElement->md_OnMouseLeave.Invoke(m_LastHotElement.get(), mousePos);
             
     }
     else if (m_HotElement)
     {
         ThVec2f mousePos = m_Input.GetMousePos();
-        m_HotElement->md_OnMouseMove.Invoke(m_HotElement.get(), mousePos.X(), mousePos.Y());
+        m_HotElement->md_OnMouseMove.Invoke(m_HotElement.get(), mousePos);
     }
     
     m_LastHotElement = m_HotElement;

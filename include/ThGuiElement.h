@@ -54,9 +54,9 @@ namespace Thor
 		void SetLayer(uint16_t layer);
         void SetLayerRecursive(uint16_t layer);
         
-        typedef ThDelegate<ThGuiElement*, float, float> OnMouseMoveDel;
-        typedef ThDelegate<ThGuiElement*, float, float> OnMouseEnterDel;
-        typedef ThDelegate<ThGuiElement*, float, float> OnMouseLeaveDel;
+        typedef ThDelegate<ThGuiElement*, const ThVec2f&> OnMouseMoveDel;
+        typedef ThDelegate<ThGuiElement*, const ThVec2f&> OnMouseEnterDel;
+        typedef ThDelegate<ThGuiElement*, const ThVec2f&> OnMouseLeaveDel;
         typedef ThDelegate<ThGuiElement*, MouseButton> OnMouseButtonPressedDel;
         typedef ThDelegate<ThGuiElement*, MouseButton> OnMouseButtonReleasedDel;
         

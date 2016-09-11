@@ -135,12 +135,12 @@ public:
         else
             image2->SetColor(ThColor(0, 0, 255, 255));
         
-		imgEnterDel = image1->md_OnMouseEnter.Connect([=](ThGuiElement* sender, float x, float y)
+		imgEnterDel = image1->md_OnMouseEnter.Connect([=](ThGuiElement* sender, const ThVec2f&)
 		{
             image2->SetState(false, (int32_t)WidgetState::Invisible);
         });
         
-		imgLeaveDel = image1->md_OnMouseLeave.Connect([=](ThGuiElement* sender, float x, float y)
+		imgLeaveDel = image1->md_OnMouseLeave.Connect([=](ThGuiElement* sender, const ThVec2f&)
 		{
             image2->SetState(true, (int32_t)WidgetState::Invisible);
         });
