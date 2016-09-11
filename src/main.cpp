@@ -83,8 +83,7 @@ public:
         m_GuiCtx->GetRootElement()->PushChild(panel1);
         m_GuiCtx->GetRootElement()->PushChild(panel2);
         
-        FillPanel(panel1, panel2, mdc_OnBtnPress1, mdc_OnMouseEnterImg1, mdc_OnMouseLeaveImg1, "btn_off.png", "btn_click.png", "zazaka.png", "bg.png");
-        
+        FillPanel(panel1, panel2, mdc_OnBtnPress1, mdc_OnMouseEnterImg1, mdc_OnMouseLeaveImg1, "btn_off.png", "btn_click.png", "zazaka.png", "bg.png");        
         FillPanel(panel2, panel1, mdc_OnBtnPress2, mdc_OnMouseEnterImg2, mdc_OnMouseLeaveImg2, "btn_off.png", "btn_click.png", "objects.png", "particles.png");
     }
     
@@ -102,6 +101,10 @@ public:
 		button->GetCaption()->SetText("Press me!");
         ThViewStateData buttonView;
         buttonView.m_Texture = btnTex;
+
+		if (!btnTex)
+			buttonView.m_Color = ThColor(255, 0, 0, 255);
+
         button->GetStates().SetStateData(WidgetViewState::NumStates, buttonView);
         buttonView.m_Texture = btnPressedTex;
         button->GetStates().SetStateData(WidgetViewState::Pressed, buttonView);
