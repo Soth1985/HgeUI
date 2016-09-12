@@ -12,6 +12,8 @@
 *.so
 *.dylib
 *.dll
+!/bin/bass.dll
+!/bin/hge.dll
 
 # Fortran module files
 *.mod
