@@ -43,9 +43,9 @@ public:
 			m_GuiCtx->SetDrawArea(drawArea);
 			ThFontHandle font = m_GuiCtx->CreateTextFont("font1.fnt");
 			m_GuiCtx->SetDefaultFont(font);
-			//CreatePanels();
+			CreatePanels();
 			//TestText();
-			TestAnchors();
+			//TestAnchors();
             ThTexHandle cursorTex = m_GuiCtx->CreateTexture("cursor.png");
             m_Cursor = new hgeSprite(cursorTex, 0, 0, 32, 32);
 			m_Hge->System_Start();			
@@ -122,6 +122,7 @@ public:
         panel2->SetColor(ThColor(128, 128, 128, 255));
         panel2->SetSize(Util::MakeDim2(0.5, 0, 0.25, 0));
 		panel2->SetAnchor(Anchor::Top, panel1, Anchor::Bottom, Util::MakeDim2(0.0, 0, 0.0, 40));
+		panel2->SetState(true, (int32_t)WidgetState::Invisible);
         
         FillPanel(panel1, panel2, mdc_OnBtnPress1, mdc_OnMouseEnterImg1, mdc_OnMouseLeaveImg1, "btn_off.png", "btn_click.png", "zazaka.png", "bg.png");        
         FillPanel(panel2, panel1, mdc_OnBtnPress2, mdc_OnMouseEnterImg2, mdc_OnMouseLeaveImg2, "btn_off.png", "btn_click.png", "objects.png", "particles.png");

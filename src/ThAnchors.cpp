@@ -58,8 +58,8 @@ void ThAnchors::SolveConstraints(ThGuiElement* elem, ThRectf& rect, const ThRect
 			{
 			case Anchor::TopLeft:
 			{
-				newTlConstraintX.Set(0.0, 0.0);
-				newTlConstraintY.Set(0.0, 0.0);
+				newTlConstraintX.Set(targetPoint.X(), targetPoint.X());
+				newTlConstraintY.Set(targetPoint.Y(), targetPoint.Y());
 				newBrConstraintX.Set(targetPoint.X(), FLT_MAX);
 				newBrConstraintY.Set(targetPoint.Y(), FLT_MAX);
 				break;
@@ -67,7 +67,7 @@ void ThAnchors::SolveConstraints(ThGuiElement* elem, ThRectf& rect, const ThRect
 			case Anchor::Top:
 			{
 				newTlConstraintX.Set(-FLT_MAX, targetPoint.X());
-				newTlConstraintY.Set(0.0, 0.0);
+				newTlConstraintY.Set(targetPoint.Y(), targetPoint.Y());
 				newBrConstraintX.Set(targetPoint.X(), FLT_MAX);
 				newBrConstraintY.Set(targetPoint.Y(), FLT_MAX);
 				break;
@@ -75,14 +75,14 @@ void ThAnchors::SolveConstraints(ThGuiElement* elem, ThRectf& rect, const ThRect
 			case Anchor::TopRight:
 			{
 				newTlConstraintX.Set(-FLT_MAX, targetPoint.X());
-				newTlConstraintY.Set(0.0, 0.0);
-				newBrConstraintX.Set(0.0, 0.0);
+				newTlConstraintY.Set(targetPoint.Y(), targetPoint.Y());
+				newBrConstraintX.Set(targetPoint.X(), targetPoint.X());
 				newBrConstraintY.Set(targetPoint.Y(), FLT_MAX);
 				break;
 			}
 			case Anchor::Left:
 			{
-				newTlConstraintX.Set(0.0, 0.0);
+				newTlConstraintX.Set(targetPoint.X(), targetPoint.X());
 				newTlConstraintY.Set(-FLT_MAX, targetPoint.Y());
 				newBrConstraintX.Set(targetPoint.X(), FLT_MAX);
 				newBrConstraintY.Set(targetPoint.Y(), FLT_MAX);
@@ -100,16 +100,16 @@ void ThAnchors::SolveConstraints(ThGuiElement* elem, ThRectf& rect, const ThRect
 			{
 				newTlConstraintX.Set(-FLT_MAX, targetPoint.X());
 				newTlConstraintY.Set(-FLT_MAX, targetPoint.Y());
-				newBrConstraintX.Set(0.0, 0.0);
+				newBrConstraintX.Set(targetPoint.X(), targetPoint.X());
 				newBrConstraintY.Set(targetPoint.Y(), FLT_MAX);
 				break;
 			}
 			case Anchor::BottomLeft:
 			{
-				newTlConstraintX.Set(0.0, 0.0);
+				newTlConstraintX.Set(targetPoint.X(), targetPoint.X());
 				newTlConstraintY.Set(-FLT_MAX, targetPoint.Y());
 				newBrConstraintX.Set(targetPoint.X(), FLT_MAX);
-				newBrConstraintY.Set(0.0, 0.0);
+				newBrConstraintY.Set(targetPoint.Y(), targetPoint.Y());
 				break;
 			}
 			case Anchor::Bottom:
@@ -117,15 +117,15 @@ void ThAnchors::SolveConstraints(ThGuiElement* elem, ThRectf& rect, const ThRect
 				newTlConstraintX.Set(-FLT_MAX, targetPoint.X());
 				newTlConstraintY.Set(-FLT_MAX, targetPoint.Y());
 				newBrConstraintX.Set(targetPoint.X(), FLT_MAX);
-				newBrConstraintY.Set(0.0, 0.0);
+				newBrConstraintY.Set(targetPoint.Y(), targetPoint.Y());
 				break;
 			}
 			case Anchor::BottomRight:
 			{
 				newTlConstraintX.Set(-FLT_MAX, targetPoint.X());
 				newTlConstraintY.Set(-FLT_MAX, targetPoint.Y());
-				newBrConstraintX.Set(0.0, 0.0);
-				newBrConstraintY.Set(0.0, 0.0);
+				newBrConstraintX.Set(targetPoint.X(), targetPoint.X());
+				newBrConstraintY.Set(targetPoint.Y(), targetPoint.Y());
 				break;
 			}
 			}
