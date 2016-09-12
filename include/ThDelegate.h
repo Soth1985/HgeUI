@@ -38,7 +38,7 @@ namespace Thor
 				if (m_Del)
 				{
 					m_Del->Disconnect(m_Slot);
-					m_Del = 0;
+					m_Del = nullptr;
 				}
 			}
 
@@ -75,6 +75,11 @@ namespace Thor
 
 		}
 
+		~ThDelegateConnection()
+		{
+			Disconnect();
+		}
+
 		ThDelegateConnection(const Connection& connection)
 			:
 		m_Connection(connection)
@@ -90,6 +95,14 @@ namespace Thor
 		ThDelegateConnection& operator=(const ThDelegateConnection& copy)
 		{
 			m_Connection = copy.m_Connection;
+			return *this;
+		}
+
+		ThDelegateConnection& operator=(ThDelegateConnection&& move)
+		{
+			Disconnect();
+			m_Connection = move.m_Connection;
+			move.m_Connection = nullptr;
 			return *this;
 		}
 
@@ -215,6 +228,7 @@ namespace Thor
 		void Disconnect(SlotIterator slot)
 		{
 			slot->m_Conn.reset();
+			slot->m_Func = nullptr;			
 		}	
 
 		SlotList m_Slots;

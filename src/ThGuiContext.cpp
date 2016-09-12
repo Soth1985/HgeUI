@@ -106,10 +106,7 @@ ThGuiElementPtr ThGuiContext::GetHotElement()
 }
 
 void ThGuiContext::SetHotElement(ThGuiElementPtr elem)
-{
-    if (m_HotElement && m_HotElement->GetLayer() > elem->GetLayer())
-        return;
-    
+{    
     m_HotElement = elem;
 }
 
@@ -120,9 +117,6 @@ ThGuiElementPtr ThGuiContext::GetActiveElement()
 
 void ThGuiContext::SetActiveElement(ThGuiElementPtr elem)
 {
-    if (m_ActiveElement && m_ActiveElement->GetLayer() > elem->GetLayer())
-        return;
-    
     if (m_HotElement == elem)
         m_ActiveElement = elem;
 }
@@ -150,5 +144,5 @@ float ThGuiContext::GetInvPixelScale()const
 void ThGuiContext::SetPixelScale(float scale)
 {
     m_PixelScale = scale;
-    m_InvPixelScale = 1.0 / scale;
+    m_InvPixelScale = 1.0f / scale;
 }

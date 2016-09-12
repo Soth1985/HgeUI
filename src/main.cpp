@@ -44,6 +44,7 @@ public:
 			ThFontHandle font = m_GuiCtx->CreateTextFont("font1.fnt");
 			m_GuiCtx->SetDefaultFont(font);
 			CreatePanels();
+			//Test();
             ThTexHandle cursorTex = m_GuiCtx->CreateTexture("cursor.png");
             m_Cursor = new hgeSprite(cursorTex, 0, 0, 32, 32);
 			m_Hge->System_Start();			
@@ -55,7 +56,7 @@ public:
     void Test()
     {
         ThGuiTextPtr text = std::make_shared<ThGuiText>(m_GuiCtx.get());
-        text->SetText("Some text");
+        text->SetText("Some text ilgljktyrtbbnbhmhjljlkhkkhjkhjhgjg");
         text->SetPosition(Util::MakeDim2(0.5, 0, 0.5, 0));
         text->SetSize(Util::MakeDim2(0.25, 0, 0.25, 0));
         text->SetColor(ThColor(255, 0, 0, 255));
@@ -94,9 +95,15 @@ public:
         ThTexHandle img1Tex = m_GuiCtx->CreateTexture(img1);
         ThTexHandle img2Tex = m_GuiCtx->CreateTexture(img2);
         const float oneThird = 1.0 / 3.0;
+
+		ThVec2f btnTexSize(1.0, 1.0);
+
+		if (btnTex)
+			btnTexSize = m_GuiCtx->GetTextureSize(btnTex);
         
         ThGuiButtonPtr button = std::make_shared<ThGuiButton>(m_GuiCtx.get());
-        button->SetSize(Util::MakeDim2(0, 120, 0, 35));
+		button->SetSize(Util::MakeDim2(oneThird, 0, 0.0, 0));
+		button->SetAspectRatioConstraint(btnTexSize.X() / btnTexSize.Y());
 		button->GetCaption()->SetTextScale(0.75);
 		button->GetCaption()->SetText("Press me!");
         ThViewStateData buttonView;
@@ -108,13 +115,14 @@ public:
         button->GetStates().SetStateData(WidgetViewState::NumStates, buttonView);
         buttonView.m_Texture = btnPressedTex;
         button->GetStates().SetStateData(WidgetViewState::Pressed, buttonView);
-        btnDel = button->md_OnMouseButtonPressed.Connect([=](ThGuiElement* sender, MouseButton btn)
+        
+		btnDel = button->md_OnMouseButtonPressed.Connect([=](ThGuiElement* sender, MouseButton btn)
 		{
 			if (btn == MouseButton::Left)
 			{
 				bool invisible = otherPanel->IsStateSet((int32_t)WidgetState::Invisible);
 				otherPanel->SetState(!invisible, (int32_t)WidgetState::Invisible);
-			}            
+			}
         });
         
         ThGuiElementPtr image1 = std::make_shared<ThGuiElement>(m_GuiCtx.get());

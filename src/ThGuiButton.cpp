@@ -42,6 +42,11 @@ m_CurState(WidgetViewState::NumStates)
 	});
 }
 
+ThGuiButton::~ThGuiButton()
+{
+
+}
+
 void ThGuiButton::ApplyState(WidgetViewState state)
 {
     if (state != WidgetViewState::NumStates)

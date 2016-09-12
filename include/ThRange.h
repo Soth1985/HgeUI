@@ -74,7 +74,7 @@ public:
         return m_Max;
     }
     
-    T Clamp(T val)
+    T Clamp(T val)const
     {
         if (val < m_Min)
             return m_Min;

@@ -9,6 +9,7 @@ namespace Thor
 	{
 	public:
         ThGuiButton(ThGuiContext* context);
+		~ThGuiButton();
         ThStatefulView& GetStates();
         ThGuiTextPtr GetCaption();
         

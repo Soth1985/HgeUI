@@ -53,17 +53,21 @@ void ThGuiElement::LayoutElementRecursive(const ThRectf& parentArea)
 	if (absSize.Y() < 0.0)
 		absSize.Y() = 0.0;
 
+	absPos = Util::Round(absPos);
+	absSize = Util::Round(absSize);
+
     m_RealRect.TopLeft() = absPos;
-    m_RealRect.BottomRight() = absPos + absSize;
-    
+    m_RealRect.BottomRight() = absPos + absSize;	    
+	
+    //TODO anchor solver
+	LayoutElement(parentArea);
+
 	if ((m_RealRect.Area() == 0.0) || !parentArea.Intersects(m_RealRect))
 	{
 		SetState(true, (int32_t)WidgetState::Clipped);
 		return;
-	}    
-	
-    //TODO anchor solver
-	LayoutElement(parentArea);
+	}
+
     for (size_t i = 0; i < m_Children.size(); ++i)
     {
         m_Children[i]->LayoutElementRecursive(m_RealRect);
@@ -94,15 +98,29 @@ void ThGuiElement::ProcessInput()
     for (uint32_t btn = 0; btn < (uint32_t)MouseButton::NumButtons; ++btn)
         isMouseBtnPressed |= m_Context->GetInput().GetMouseButtonState((MouseButton)btn, (int32_t)InputButtonState::Down);
 
-    if (m_Context->GetHotElement() == nullptr)
+    if (!m_Context->GetHotElement())
     {
         if (isMouseInside)
         {
             m_Context->SetHotElement(This());
         }
     }
+	else if (m_Context->GetHotElement()->GetLayer() < m_Layer)
+	{
+		if (isMouseInside)
+		{
+			m_Context->SetHotElement(This());
+		}
+	}
     
-    if (m_Context->GetActiveElement() == nullptr)
+    if (!m_Context->GetActiveElement())
+	{
+		if (isMouseInside && isMouseBtnPressed)
+		{
+			m_Context->SetActiveElement(This());
+		}
+	}
+	else if (m_Context->GetActiveElement()->GetLayer() < m_Layer)
 	{
 		if (isMouseInside && isMouseBtnPressed)
 		{
@@ -266,7 +284,7 @@ void ThGuiElement::GetChildrenByNameRecursive(const std::string& name, ChildrenC
     }
 }
 
-bool ThGuiElement::SwapChilds(ThElementID c1, ThElementID c2)
+bool ThGuiElement::SwapChildren(ThElementID c1, ThElementID c2)
 {
     int32_t c1Index = GetChildIndex(c1);
     int32_t c2Index = GetChildIndex(c2);

@@ -82,11 +82,11 @@ ThTexHandle ThGuiContextHge::CreateTexture(const std::string& name)
     }
 }
 
-ThVec2f ThGuiContextHge::GetTextureSize(ThTexHandle tex)override
+ThVec2f ThGuiContextHge::GetTextureSize(ThTexHandle tex)
 {
     ThVec2f result;
-    result.X() = m_Hge->Texture_GetWidth(tex);
-    result.Y() = m_Hge->Texture_GetHeight(tex);
+    result.X() = (float)m_Hge->Texture_GetWidth(tex);
+    result.Y() = (float)m_Hge->Texture_GetHeight(tex);
     return result;
 }
 

@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\ThAnchors.cpp" />
     <ClCompile Include="..\src\ThCommandBuffer.cpp" />
     <ClCompile Include="..\src\ThGuiButton.cpp" />
     <ClCompile Include="..\src\ThGuiContext.cpp" />
@@ -21,6 +22,7 @@
     <ClCompile Include="..\src\ThStatefulView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\ThAnchors.h" />
     <ClInclude Include="..\include\ThColor.h" />
     <ClInclude Include="..\include\ThCommandBuffer.h" />
     <ClInclude Include="..\include\ThDelegate.h" />

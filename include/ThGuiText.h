@@ -22,7 +22,7 @@ namespace Thor
 		void SetHorTextAlignment(TextHorAlignment align);
     protected:
         virtual void RenderElement(ThCommandBuffer& cmd, uint16_t depth)override;
-        virtual void IsClipper()override;
+        virtual bool IsClipper()override;
         
         ThFontHandle m_Font;
         ThColor m_TextColor;

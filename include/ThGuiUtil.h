@@ -44,7 +44,8 @@ namespace Thor
         
         static ThVec2f GetAnchorPoint(Anchor point, const ThRectf& rect)
         {
-            ThVec2f points[4] = DecomposeRect(rect);
+			ThVec2f points[4];
+			DecomposeRect(rect, points);
             
             switch (point)
             {
@@ -70,5 +71,13 @@ namespace Thor
             
             return ThVec2f();
         }
+
+		static ThVec2f Round(const ThVec2f& vec)
+		{
+			ThVec2f result;
+			result.X() = round(vec.X());
+			result.Y() = round(vec.Y());
+			return result;
+		}
     }
 }

@@ -109,7 +109,7 @@ void ThGuiText::RenderElement(ThCommandBuffer& cmd, uint16_t depth)
 	}    
 }
 
-void IsClipper()
+bool ThGuiText::IsClipper()
 {
     if (m_Font && !m_Text.empty())
         return true;
