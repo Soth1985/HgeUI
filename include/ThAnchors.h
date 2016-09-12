@@ -15,13 +15,13 @@ namespace Thor
         }
         
         Anchor m_TargetPoint;
-        ThElementID m_TargetElement;        
+        ThElementID m_TargetElement;
+		ThDim2 m_Offset;
 	};
     
     struct ThConstrainedPosition
     {
-		void Translate(const ThVec2f& offset);
-        
+		void Translate(const ThVec2f& offset);        
 		void Reset(const ThVec2f& position);
         
         ThVec2f m_Position;
@@ -31,9 +31,9 @@ namespace Thor
     
     struct ThAnchors
     {
-		void SolveConstraints(ThGuiElement* elem, ThRectf& rect);
-        
+		void SolveConstraints(ThGuiElement* elem, ThRectf& rect, const ThRectf& parentRect);        
 		ThVec2f GetTargetPoint(ThGuiElement* elem, Anchor targetPoint, ThElementID targetElement);
+		void ClearAnchors();
         
         ThAnchorData m_Data[(int32_t)Anchor::NumAnchors];
         ThConstrainedPosition m_TopLeft;

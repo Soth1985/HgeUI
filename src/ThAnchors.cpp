@@ -1,15 +1,20 @@
 #include "ThAnchors.h"
 #include "ThGuiElement.h"
+#include "ThGuiContext.h"
 #include "ThGuiUtil.h"
 
 using namespace Thor;
 
 void ThConstrainedPosition::Translate(const ThVec2f& offset)
 {
-	ThVec2f clampedOffset(offset);
+	/*ThVec2f clampedOffset(offset);
 	clampedOffset.X() = m_ConstraintX.Clamp(offset.X());
 	clampedOffset.Y() = m_ConstraintY.Clamp(offset.Y());
-	m_Position = m_Position + clampedOffset;
+	m_Position = m_Position + clampedOffset;*/
+
+	m_Position = m_Position + offset;
+	m_Position.X() = m_ConstraintX.Clamp(m_Position.X());
+	m_Position.Y() = m_ConstraintY.Clamp(m_Position.Y());
 }
 
 void ThConstrainedPosition::Reset(const ThVec2f& position)
@@ -21,7 +26,15 @@ void ThConstrainedPosition::Reset(const ThVec2f& position)
 	m_ConstraintY.Max() = FLT_MAX;
 }
 
-void ThAnchors::SolveConstraints(ThGuiElement* elem, ThRectf& rect)
+void ThAnchors::ClearAnchors()
+{
+	for (int32_t i = 0; i < (int32_t)Anchor::NumAnchors; ++i)
+	{
+		m_Data[i].m_TargetPoint = Anchor::NumAnchors;
+	}
+}
+
+void ThAnchors::SolveConstraints(ThGuiElement* elem, ThRectf& rect, const ThRectf& parentRect)
 {
 	m_TopLeft.Reset(rect.TopLeft());
 	m_BottomRight.Reset(rect.BottomRight());
@@ -32,7 +45,8 @@ void ThAnchors::SolveConstraints(ThGuiElement* elem, ThRectf& rect)
 		{
 			ThVec2f targetPoint = GetTargetPoint(elem, m_Data[i].m_TargetPoint, m_Data[i].m_TargetElement);
 			ThVec2f point = Util::GetAnchorPoint((Anchor)i, rect);
-			ThVec2f offset = targetPoint - point;
+			ThVec2f anchorOffset = Util::GetAbsoluteDimension(m_Data[i].m_Offset, parentRect.Size(), elem->GetContext()->GetPixelScale());
+			ThVec2f offset = targetPoint - point + anchorOffset;
 			m_TopLeft.Translate(offset);
 			m_BottomRight.Translate(offset);
 			ThRange<float> newTlConstraintX;
@@ -40,7 +54,7 @@ void ThAnchors::SolveConstraints(ThGuiElement* elem, ThRectf& rect)
 			ThRange<float> newBrConstraintX;
 			ThRange<float> newBrConstraintY;
 
-			switch (m_Data[i].m_TargetPoint)
+			switch ((Anchor)i)
 			{
 			case Anchor::TopLeft:
 			{

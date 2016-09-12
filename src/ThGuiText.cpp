@@ -1,5 +1,6 @@
 #include "ThGuiText.h"
 #include "ThGuiContext.h"
+#include "ThGuiUtil.h"
 
 using namespace Thor;
 
@@ -105,7 +106,7 @@ void ThGuiText::RenderElement(ThCommandBuffer& cmd, uint16_t depth)
 			textPos = textPos + ThVec2f(m_RealRect.Width() - textWidth, 0.0);
 		}
 
-		cmd.AddText(m_Text.c_str(), textPos, m_Font, m_TextScale, layer, m_TextColor);
+		cmd.AddText(m_Text.c_str(), Util::Round(textPos), m_Font, m_TextScale, layer, m_TextColor);
 	}    
 }
 

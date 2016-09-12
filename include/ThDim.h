@@ -102,7 +102,7 @@ namespace Thor
             return (m_Rel + m_Abs) < (rhs.m_Rel + rhs.m_Abs);
         }
         
-        float AbsoluteDimension(float size)const
+        float AbsoluteDimension(float size, float pixelScale)const
         {
             return m_Rel * size + m_Abs;
         }

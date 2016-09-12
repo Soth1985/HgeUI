@@ -6,10 +6,10 @@ namespace Thor
 {
 	namespace Util
     {
-        static ThVec2f GetAbsoluteDimension(const ThDim2& relativeDim, const ThVec2f& parentDim)
+        static ThVec2f GetAbsoluteDimension(const ThDim2& relativeDim, const ThVec2f& parentDim, float pixelScale)
         {
-            float x = relativeDim.X().AbsoluteDimension(parentDim.X());
-            float y = relativeDim.Y().AbsoluteDimension(parentDim.Y());
+            float x = relativeDim.X().AbsoluteDimension(parentDim.X(), pixelScale);
+            float y = relativeDim.Y().AbsoluteDimension(parentDim.Y(), pixelScale);
             return ThVec2f(x, y);
         }
 
@@ -56,11 +56,11 @@ namespace Thor
                 case Anchor::TopRight:
                     return points[1];
                 case Anchor::Left:
-                    return (points[1] + points[2]) * 0.5;
-                case Anchor::Center:
-                    return (points[1] + points[2]) * 0.5;
-                case Anchor::Right:
                     return (points[0] + points[3]) * 0.5;
+                case Anchor::Center:
+                    return (points[0] + points[2]) * 0.5;
+                case Anchor::Right:
+                    return (points[1] + points[2]) * 0.5;
                 case Anchor::BottomLeft:
                     return points[3];
                 case Anchor::Bottom:

@@ -9,8 +9,8 @@ namespace Thor
 
 		ThVec2()
 			:
-		m_X(0.0),
-		m_Y(0.0)
+		m_X(0.0f),
+		m_Y(0.0f)
 		{
 		}
 

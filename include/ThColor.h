@@ -33,8 +33,5 @@ namespace Thor
 		uint8_t m_G;
 		uint8_t m_B;
 		uint8_t m_A;
-	};
-    
-    static const ThColor EmptyColor;
-	static const ThColor WhiteColor(255, 255, 255, 255);
+	};    
 }

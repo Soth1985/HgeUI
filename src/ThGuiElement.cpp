@@ -35,8 +35,8 @@ void ThGuiElement::LayoutElementRecursive(const ThRectf& parentArea)
     ThVec2f parentSize = parentArea.Size();
     ThDim2 relPos = GetPosition();
     ThDim2 relSize = GetSize();
-    ThVec2f absPos = parentArea.TopLeft() + Util::GetAbsoluteDimension(relPos, parentSize);
-    ThVec2f absSize = Util::GetAbsoluteDimension(relSize, parentSize);
+    ThVec2f absPos = parentArea.TopLeft() + Util::GetAbsoluteDimension(relPos, parentSize, m_Context->GetPixelScale());
+    ThVec2f absSize = Util::GetAbsoluteDimension(relSize, parentSize, m_Context->GetPixelScale());
     
     if (m_AspectRatioConstraint > 0.0)
     {
@@ -53,13 +53,17 @@ void ThGuiElement::LayoutElementRecursive(const ThRectf& parentArea)
 	if (absSize.Y() < 0.0)
 		absSize.Y() = 0.0;
 
-	absPos = Util::Round(absPos);
-	absSize = Util::Round(absSize);
+	//absPos = Util::Round(absPos);
+	//absSize = Util::Round(absSize);
 
     m_RealRect.TopLeft() = absPos;
-    m_RealRect.BottomRight() = absPos + absSize;	    
-	
-    //TODO anchor solver
+	m_RealRect.BottomRight() = absPos + absSize;	
+    
+	m_Anchors.SolveConstraints(this, m_RealRect, parentArea);
+
+	m_RealRect.TopLeft() = Util::Round(m_RealRect.TopLeft());
+	m_RealRect.BottomRight() = Util::Round(m_RealRect.BottomRight());
+
 	LayoutElement(parentArea);
 
 	if ((m_RealRect.Area() == 0.0) || !parentArea.Intersects(m_RealRect))
@@ -461,4 +465,45 @@ void ThGuiElement::SetAspectRatioConstraint(float aspect)
 bool ThGuiElement::IsClipper()
 {
     return GetNumChildren() > 0;
+}
+
+bool ThGuiElement::SetAnchor(Anchor point, ThGuiElementPtr target, Anchor targetPoint, const ThDim2& offset)
+{
+	if (!target)
+		return false;
+
+	if (!m_Parent)
+		return false;
+
+	bool isValidAnchor = false;
+
+	if (target.get() == m_Parent)
+		isValidAnchor = true;
+
+	if (!isValidAnchor)
+	{
+		int32_t selfIndex = m_Parent->GetChildIndex(GetElementID());
+		int32_t targetIndex = m_Parent->GetChildIndex(target->GetElementID());
+
+		isValidAnchor = targetIndex < selfIndex;
+	}
+
+	if (!isValidAnchor)
+		return false;
+
+	m_Anchors.m_Data[(int32_t)point].m_TargetPoint = targetPoint;
+	m_Anchors.m_Data[(int32_t)point].m_TargetElement = target->GetElementID();
+	m_Anchors.m_Data[(int32_t)point].m_Offset = offset;
+
+	return true;
+}
+
+void ThGuiElement::ClearAnchors()
+{
+	m_Anchors.ClearAnchors();
+}
+
+ThGuiContext* ThGuiElement::GetContext()
+{
+	return m_Context;
 }

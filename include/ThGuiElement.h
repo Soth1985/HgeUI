@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ThGuiForward.h"
+#include "ThAnchors.h"
 #include "ThCommandBuffer.h"
 #include "ThDelegate.h"
 #include <vector>
@@ -17,6 +18,7 @@ namespace Thor
         virtual void LayoutElementRecursive(const ThRectf& parentArea);
         virtual WidgetType GetType()const;
         
+		ThGuiContext* GetContext();
         void RenderRecursive(ThCommandBuffer& cmd, uint16_t depth);
         bool PushChild(ThGuiElementPtr child);
         ThGuiElementPtr GetChild(ThElementID child);
@@ -56,6 +58,8 @@ namespace Thor
         const ThRectf& GetRealRect()const;
         float GetAspectRatioConstraint()const;
         void SetAspectRatioConstraint(float aspect);
+		bool SetAnchor(Anchor point, ThGuiElementPtr target, Anchor targetPoint, const ThDim2& offset = EmptyDim2);
+		void ClearAnchors();
         
         typedef ThDelegate<ThGuiElement*, const ThVec2f&> OnMouseMoveDel;
         typedef ThDelegate<ThGuiElement*, const ThVec2f&> OnMouseEnterDel;
@@ -88,5 +92,6 @@ namespace Thor
 		uint16_t m_Layer;
         float m_BorderWidth;
         float m_AspectRatioConstraint;
+		ThAnchors m_Anchors;
     };
 }

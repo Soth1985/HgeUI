@@ -153,7 +153,7 @@
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>.\Release\hge_gui.exe</OutputFile>
+      <OutputFile>$(OutDir)\hge_gui.exe</OutputFile>
       <AdditionalDependencies>..\dependencies\hge\lib\vc\hge.lib;..\dependencies\hge\lib\vc\hgehelp.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libc</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>

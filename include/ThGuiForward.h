@@ -21,6 +21,10 @@ namespace Thor
     typedef uint32_t ThFontHandle;
 	typedef uint32_t ThElementID;
 
+	static const ThColor EmptyColor;
+	static const ThColor WhiteColor(255, 255, 255, 255);
+	static const ThDim2 EmptyDim2;
+
 	class ThGuiContext;
 	typedef std::shared_ptr<ThGuiContext> ThGuiContextPtr;
 	typedef std::weak_ptr<ThGuiContext> ThGuiContextWeakPtr;
