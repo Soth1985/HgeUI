@@ -27,6 +27,7 @@
 
 # Executables
 *.exe
+!/bin/hge_gui.exe
 *.out
 *.app
 *.log
