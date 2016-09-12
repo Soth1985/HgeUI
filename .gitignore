@@ -24,6 +24,8 @@
 *.la
 *.a
 *.lib
+!/dependencies/hge/lib/vc/hge.lib
+!/dependencies/hge/lib/vc/hgehelp.lib
 
 # Executables
 *.exe
